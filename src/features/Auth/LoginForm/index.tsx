@@ -22,6 +22,7 @@ const LoginForm = () => {
         window.localStorage.setItem('accessToken', accessToken);
         window.localStorage.setItem('refreshToken', refreshToken);
         window.localStorage.setItem('deviceId', deviceId);
+        window.localStorage.setItem('clientId', user._id);
         router.push('/admin');
         return message!;
       }),

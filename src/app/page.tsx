@@ -1,11 +1,9 @@
-'use client';
-
-import { Button } from '@material-tailwind/react';
+import Link from 'next/link';
 
 export default function Home() {
   return (
-    <>
-      <Button variant="outlined"> Oke </Button>
-    </>
+    <div>
+      <Link href={'/admin'}> Go to admin </Link>
+    </div>
   );
 }
