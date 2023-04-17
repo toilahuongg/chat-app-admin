@@ -1,7 +1,7 @@
 import express from 'express';
 import accountsRouter from './accounts';
 import rolesRouter from './roles';
-import { TInputError } from '@server/schema/response.schema';
+import { TErrorResponse } from '@server/schema/response.schema';
 import ErrorResponse from '@server/core/error.response';
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.use((req: express.Request, res: express.Response, next: express.NextFunct
   const error = new ErrorResponse({ message: 'Not found', statusCode: 404 });
   next(error);
 });
-router.use((error: TInputError, req: express.Request, res: express.Response, _: express.NextFunction) => {
+router.use((error: TErrorResponse, req: express.Request, res: express.Response, _: express.NextFunction) => {
   const { statusCode, message } = error;
   const code = statusCode || 500;
   const errorMessage = message || 'Internal Server Error';

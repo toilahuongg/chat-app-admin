@@ -1,5 +1,5 @@
 import RoleModel from '@server/models/role.model';
-import { SCOPES, TScopes } from './permissions';
+import { SCOPES, TScopes } from './scopes';
 import AccountService from '@server/services/account.service';
 import AccountModel from '@server/models/account.model';
 

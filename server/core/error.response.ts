@@ -1,4 +1,4 @@
-import { TInputError } from '@server/schema/response.schema';
+import { TErrorResponse } from '@server/schema/response.schema';
 import { StatusCodes, ReasonPhrases } from '@server/utils/httpStatusCode';
 
 export default class ErrorResponse extends Error {
@@ -6,7 +6,7 @@ export default class ErrorResponse extends Error {
   constructor({
     message = ReasonPhrases.INTERNAL_SERVER_ERROR,
     statusCode = StatusCodes.INTERNAL_SERVER_ERROR,
-  }: TInputError) {
+  }: TErrorResponse) {
     super(message);
     this.statusCode = statusCode;
   }

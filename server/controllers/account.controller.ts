@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { CREATED, OK } from '@server/core/success.response';
 import AccountService from '@server/services/account.service';
 
-class AccessController {
+class AccountController {
   static async signUp(req: Request, res: Response) {
     new CREATED({
       message: 'Registered OK!',
@@ -47,6 +47,13 @@ class AccessController {
       metadata: await AccountService.changeInformation(req.accountId!, req.body),
     }).send(res);
   }
+
+  static async getInformation(req: Request, res: Response) {
+    new OK({
+      message: 'Get account information success!',
+      metadata: await AccountService.findById(req.accountId!),
+    }).send(res);
+  }
 }
 
-export default AccessController;
+export default AccountController;

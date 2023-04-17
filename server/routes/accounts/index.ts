@@ -1,5 +1,5 @@
 import express from 'express';
-import accessController from '@server/controllers/account.controller';
+import AccountController from '@server/controllers/account.controller';
 import { detectException } from '@server/middlewares';
 import validate from '@server/validators';
 import {
@@ -14,9 +14,9 @@ import detectDevice from '@server/middlewares/device.middleware';
 
 const router = express.Router();
 
-router.post('/accounts/signup', detectDevice, validate(signUpValidator), detectException(accessController.signUp));
+router.post('/accounts/signup', detectDevice, validate(signUpValidator), detectException(AccountController.signUp));
 
-router.post('/accounts/login', detectDevice, validate(loginValidator), detectException(accessController.login));
+router.post('/accounts/login', detectDevice, validate(loginValidator), detectException(AccountController.login));
 
 router.use(authentication);
 if (!appConfig.app.isProd) {
@@ -25,19 +25,20 @@ if (!appConfig.app.isProd) {
   });
 }
 
-router.post('/accounts/refresh-token', detectException(accessController.refreshToken));
+router.post('/accounts/refresh-token', detectException(AccountController.refreshToken));
+router.get('/accounts/me', detectException(AccountController.getInformation));
 
 router.put(
   '/accounts/change-password',
   validate(changePasswordValidator),
-  detectException(accessController.changePassword),
+  detectException(AccountController.changePassword),
 );
 
 router.put(
   '/accounts/change-information',
   validate(changeInformationValidator),
-  detectException(accessController.changeInformation),
+  detectException(AccountController.changeInformation),
 );
 
-router.post('/accounts/logout', detectException(accessController.logout));
+router.post('/accounts/logout', detectException(AccountController.logout));
 export default router;

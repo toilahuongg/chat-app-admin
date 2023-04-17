@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { TInputSuccess } from '@server/schema/response.schema';
+import { TSuccessResponse } from '@server/schema/response.schema';
 import { ReasonPhrases, StatusCodes } from '@server/utils/httpStatusCode';
 import { Response } from 'express';
 
@@ -7,7 +7,7 @@ export class SuccessResponse<T> {
   protected message: string;
   protected statusCode: number;
   protected metadata: T;
-  constructor({ message = ReasonPhrases.OK, statusCode = StatusCodes.OK, metadata }: TInputSuccess<T>) {
+  constructor({ message = ReasonPhrases.OK, statusCode = StatusCodes.OK, metadata }: TSuccessResponse<T>) {
     this.message = message;
     this.statusCode = statusCode;
     this.metadata = metadata;
@@ -24,13 +24,13 @@ export class SuccessResponse<T> {
 }
 
 export class OK<T> extends SuccessResponse<T> {
-  constructor({ message, metadata }: TInputSuccess<T>) {
+  constructor({ message, metadata }: TSuccessResponse<T>) {
     super({ message, metadata });
   }
 }
 
 export class CREATED<T> extends SuccessResponse<T> {
-  constructor({ message = ReasonPhrases.CREATED, statusCode = StatusCodes.CREATED, metadata }: TInputSuccess<T>) {
+  constructor({ message = ReasonPhrases.CREATED, statusCode = StatusCodes.CREATED, metadata }: TSuccessResponse<T>) {
     super({ message, statusCode, metadata });
   }
 }

@@ -1,7 +1,7 @@
 import express from 'express';
 import { authentication } from '@server/middlewares/auth.middleware';
 import { accessScopes, detechRoles } from '@server/middlewares/role.middleware';
-import { SCOPES } from '@server/utils/permissions';
+import { SCOPES } from '@server/utils/scopes';
 import validate from '@server/validators';
 import { createRoleValidator, deleteRoleValidator, updateRoleValidator } from '@server/validators/role.validator';
 import RoleController from '@server/controllers/role.controller';

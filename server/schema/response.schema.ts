@@ -5,7 +5,7 @@ const errorSchema = z.object({
   statusCode: z.number().optional(),
 });
 
-export type TInputError = z.infer<typeof errorSchema>;
+export type TErrorResponse = z.infer<typeof errorSchema>;
 
 const successSchema = z.object({
   message: z.string().optional(),
@@ -13,4 +13,4 @@ const successSchema = z.object({
   metadata: z.any(),
 });
 
-export type TInputSuccess<T> = Omit<z.infer<typeof successSchema>, 'metadata'> & { metadata: T };
+export type TSuccessResponse<T> = Omit<z.infer<typeof successSchema>, 'metadata'> & { metadata: T };

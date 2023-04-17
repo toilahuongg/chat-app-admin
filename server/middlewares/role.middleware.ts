@@ -1,12 +1,9 @@
-import { union } from 'lodash';
 import AccountService from '@server/services/account.service';
 import { detectException } from '.';
 import { ForbiddenError } from '@server/core/error.response';
 
 export const detechRoles = detectException(async (req, res, next) => {
-  const roles = await AccountService.getRolesById(req.accountId!);
-  const scopes = union(...roles.map((role) => role.scopes));
-  req.scopes = scopes;
+  req.scopes = await AccountService.getScopesById(req.accountId!);
   return next();
 });
 
