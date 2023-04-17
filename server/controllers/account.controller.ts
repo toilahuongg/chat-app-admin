@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
 import { CREATED, OK } from '@server/core/success.response';
 import AccountService from '@server/services/account.service';
+import HEADERS from '@server/utils/headers';
+import { AuthFailureError } from '@server/core/error.response';
+import { Types } from 'mongoose';
 
 class AccountController {
   static async signUp(req: Request, res: Response) {
@@ -18,9 +21,12 @@ class AccountController {
   }
 
   static async logout(req: Request, res: Response) {
+    const deviceId = req.headers[HEADERS.DEVICE_ID] as string;
+    if (!deviceId) throw new AuthFailureError('Missing Device ID!');
+
     new OK({
       message: 'Logout success!',
-      metadata: await AccountService.logout(req.accountId!, req.deviceId!),
+      metadata: await AccountService.logout(req.accountId!, new Types.ObjectId(deviceId)),
     }).send(res);
   }
 

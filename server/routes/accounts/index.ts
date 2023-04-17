@@ -28,13 +28,13 @@ if (!appConfig.app.isProd) {
 router.post('/accounts/refresh-token', detectException(AccountController.refreshToken));
 router.get('/accounts/me', detectException(AccountController.getInformation));
 
-router.put(
+router.patch(
   '/accounts/change-password',
   validate(changePasswordValidator),
   detectException(AccountController.changePassword),
 );
 
-router.put(
+router.patch(
   '/accounts/change-information',
   validate(changeInformationValidator),
   detectException(AccountController.changeInformation),

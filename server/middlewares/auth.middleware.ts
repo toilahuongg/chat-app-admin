@@ -19,14 +19,17 @@ export const authentication = detectException(async (req, res, next) => {
   const accountId = req.headers[HEADERS.CLIENT_ID] as string;
   if (!accountId) throw new AuthFailureError('Missing Client ID!');
 
-  const deviceId = req.headers[HEADERS.DEVICE_ID] as string;
-  if (!deviceId) throw new AuthFailureError('Missing Device ID!');
-
-  const foundKey = await KeyService.findByDeviceAccountId(new Types.ObjectId(deviceId), new Types.ObjectId(accountId));
-  if (!foundKey) throw new AuthFailureError('Invalid Device ID or Client ID!');
-
   if (req.headers[HEADERS.REFRESH_TOKEN]) {
     try {
+      const deviceId = req.headers[HEADERS.DEVICE_ID] as string;
+      if (!deviceId) throw new AuthFailureError('Missing Device ID!');
+
+      const foundKey = await KeyService.findByDeviceAccountId(
+        new Types.ObjectId(deviceId),
+        new Types.ObjectId(accountId),
+      );
+      if (!foundKey) throw new AuthFailureError('Invalid Device ID or Client ID!');
+
       const refreshToken = req.headers[HEADERS.REFRESH_TOKEN] as string;
       const decoded = (await verifyToken(refreshToken, foundKey.publicKey)) as TAccountEncrypt;
       if (decoded.accountId !== accountId) throw new AuthFailureError('Invalid Client ID');
@@ -38,6 +41,8 @@ export const authentication = detectException(async (req, res, next) => {
       throw error;
     }
   }
+  const foundKey = await KeyService.findByAccountId(new Types.ObjectId(accountId));
+  if (!foundKey) throw new AuthFailureError('Invalid Client ID!');
 
   const bearerToken = req.headers[HEADERS.AUTHORIZATION] as string;
   if (!bearerToken || !bearerToken.includes('Bearer ')) throw new AuthFailureError('Missing Bearer AccessToken!');
@@ -60,6 +65,5 @@ export const authentication = detectException(async (req, res, next) => {
 
   if (accountId !== decoded.accountId) throw new AuthFailureError('Invalid Client ID');
   req.accountId = new Types.ObjectId(accountId);
-  req.deviceId = new Types.ObjectId(deviceId);
   return next();
 });

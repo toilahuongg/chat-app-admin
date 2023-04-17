@@ -60,6 +60,10 @@ export default class KeyService {
     return KeyModel.findOne({ account }, { _id: 0, publicKey: 1, privateKey: 1 }).lean();
   }
 
+  static findByAccountId(accountId: Types.ObjectId) {
+    return KeyModel.findOne({ account: accountId }).lean();
+  }
+
   static findByDeviceAccountId(deviceId: Types.ObjectId, accountId: Types.ObjectId) {
     return KeyModel.findOne({ 'devices._id': deviceId, account: accountId }).lean();
   }

@@ -209,11 +209,10 @@ describe('refreshToken', () => {
 describe('change-password', () => {
   const request = (body: Partial<z.infer<typeof changePasswordValidator.shape.body>>) =>
     fetch(`${uri}/accounts/change-password`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         [HEADERS.CLIENT_ID]: accountId,
-        [HEADERS.DEVICE_ID]: deviceId,
         [HEADERS.AUTHORIZATION]: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(body),
@@ -231,7 +230,7 @@ describe('change-password', () => {
 describe('change-information', () => {
   const request = (body: Partial<z.infer<typeof changeInformationValidator.shape.body>>) =>
     fetch(`${uri}/accounts/change-information`, {
-      method: 'PUT',
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         [HEADERS.CLIENT_ID]: accountId,
