@@ -13,7 +13,10 @@ const PATH_HOMEPAGE = '/';
 const PATH_SIGNIN = '/signin';
 const PATH_ADMIN = '/admin';
 
-export default function RootTemplate({ children }: { children: React.ReactNode }) {
+type Props = {
+  children: React.ReactNode;
+};
+export default function RootTemplate({ children }: Props) {
   const pathname = usePathname();
   const { data, isLoading, error } = useSWR('/accounts/me', (url) =>
     instance<TSuccessResponse<Account>>(url).then(({ data }) => data.metadata),
@@ -21,12 +24,14 @@ export default function RootTemplate({ children }: { children: React.ReactNode }
   if (isLoading) return <div> Loading ...</div>;
   if (error && (pathname.startsWith(PATH_ADMIN) || pathname === PATH_HOMEPAGE)) redirect(PATH_SIGNIN);
   if (data && !data.scopes.includes(SCOPES.ACCESS_ADMINISTRATION) && pathname !== PATH_SIGNIN) redirect(PATH_SIGNIN);
-  if (data && !pathname.startsWith(PATH_HOMEPAGE)) redirect(PATH_ADMIN);
+  if (data && !pathname.startsWith(PATH_ADMIN)) redirect(PATH_ADMIN);
 
   return (
-    <ThemeProvider>
-      <AccountProvider value={data!}>{children}</AccountProvider>
-      <Toaster />
-    </ThemeProvider>
+    <div>
+      <ThemeProvider>
+        <AccountProvider value={data!}>{children}</AccountProvider>
+        <Toaster />
+      </ThemeProvider>
+    </div>
   );
 }

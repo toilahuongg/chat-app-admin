@@ -1,17 +1,15 @@
 'use client';
 
-import { Button, Card, Checkbox, Input, Typography } from '@material-tailwind/react';
+import { Card, Checkbox, Input, Typography } from '@material-tailwind/react';
 import Link from 'next/link';
 import useStore from './loginStore';
 import { SCOPES } from '@server/utils/scopes';
 import { toastResponse } from '@src/utils/toast';
-import { useRouter } from 'next/navigation';
+import Button from '@src/components/Button';
 
 const LoginForm = () => {
-  const router = useRouter();
-  const { account, password, isRememberMe, updateAccount, updatePassword, toggleIsRememberMe, fetchLogin } = useStore(
-    (state) => state,
-  );
+  const { account, password, isRememberMe, isLoading, updateAccount, updatePassword, toggleIsRememberMe, fetchLogin } =
+    useStore((state) => state);
 
   const handleSubmit = () =>
     toastResponse(
@@ -23,7 +21,7 @@ const LoginForm = () => {
         window.localStorage.setItem('refreshToken', refreshToken);
         window.localStorage.setItem('deviceId', deviceId);
         window.localStorage.setItem('clientId', user._id);
-        router.push('/admin');
+        window.location.href = '/admin';
         return message!;
       }),
     );
@@ -65,8 +63,8 @@ const LoginForm = () => {
             <Link href="/forgot-password">Forgot password?</Link>
           </Typography>
         </div>
-        <Button type="submit" className="mt-6" fullWidth>
-          Login
+        <Button type="submit" className="mt-6" isLoading={isLoading} fullWidth>
+          Submit
         </Button>
       </form>
     </Card>

@@ -12,3 +12,14 @@
 .flex-center {
   @apply flex justify-center items-center;
 }
+.sectionWrapper {
+  @apply flex gap-4
+}
+
+.sidebar {
+  @apply w-80 px-4 h-screen sticky top-0 overflow-y-auto;
+}
+.main {
+  flex: 1;
+  height: 1000vh;
+}
