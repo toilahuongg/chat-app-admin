@@ -5,6 +5,7 @@ import validate from '@server/validators';
 import {
   changeInformationValidator,
   changePasswordValidator,
+  findAllUsersValidator,
   loginValidator,
   signUpValidator,
 } from '@server/validators/account.validator';
@@ -27,6 +28,7 @@ if (!appConfig.app.isProd) {
 
 router.post('/accounts/refresh-token', detectException(AccountController.refreshToken));
 router.get('/accounts/me', detectException(AccountController.getInformation));
+router.get('/accounts', validate(findAllUsersValidator), detectException(AccountController.findAllUsers));
 
 router.patch(
   '/accounts/change-password',

@@ -10,3 +10,7 @@ export const initialAccount: Account = {
   phoneNumber: '',
   scopes: [],
 };
+
+export const PATH_HOMEPAGE = '/';
+export const PATH_SIGNIN = '/signin';
+export const PATH_ADMIN = '/admin';

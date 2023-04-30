@@ -5,7 +5,7 @@ import AccountModel from './account.model';
 const DOCUMENT_NAME = 'Key';
 const COLLECTION_NAME = 'Keys';
 
-const deviceSchema = new Schema<TDevice>({
+const DeviceSchema = new Schema<TDevice>({
   browser: {
     type: String,
     required: true,
@@ -24,7 +24,7 @@ const deviceSchema = new Schema<TDevice>({
     unique: true,
   },
 });
-const keySchema = new Schema<TKey>(
+const KeySchema = new Schema<TKey>(
   {
     account: {
       type: Schema.Types.ObjectId,
@@ -39,11 +39,11 @@ const keySchema = new Schema<TKey>(
       type: String,
       required: true,
     },
-    devices: { type: [deviceSchema], required: true, default: [] },
+    devices: { type: [DeviceSchema], required: true, default: [] },
     refreshTokensUsed: { type: [String], required: true, default: [] },
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );
-const KeyModel = model<TKey>(DOCUMENT_NAME, keySchema);
+const KeyModel = model<TKey>(DOCUMENT_NAME, KeySchema);
 
 export default KeyModel;

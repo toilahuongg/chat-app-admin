@@ -10,10 +10,8 @@ import instance from '@src/utils/instance';
 import HEADERS from '@server/utils/headers';
 import { toast } from 'react-hot-toast';
 import { TErrorResponse } from '@server/schema/response.schema';
-import { useRouter } from 'next/navigation';
 
 const Sidebar = () => {
-  const router = useRouter();
   const handleLogout = async () => {
     try {
       const refreshToken = window.localStorage.getItem('refreshToken');

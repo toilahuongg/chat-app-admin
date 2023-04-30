@@ -4,22 +4,24 @@ import ErrorResponse, { AuthFailureError, ConflictError } from '@server/core/err
 import { generateKey } from '@server/helpers/generateKey';
 import { createTokenPair, generateToken, verifyToken } from '@server/helpers/token';
 import KeyService from './key.service';
-import { getInfoData } from '@server/helpers';
+import { getInfoData } from '@server/utils';
 import { z } from 'zod';
 import {
   changeInformationValidator,
   changePasswordValidator,
+  findAllUsersValidator,
   loginValidator,
   signUpValidator,
 } from '@server/validators/account.validator';
 import { TDevice } from '@server/schema/key.schema';
-import { TRefreshTokenSchema, TAccountEncrypt } from '@server/schema/account.schema';
+import { TRefreshTokenSchema, TAccountEncrypt, TAccount } from '@server/schema/account.schema';
 import { Types } from 'mongoose';
 import { ForbiddenError } from '@server/core/error.response';
 import appConfig from '@server/configs/app.config';
 import { NotFoundError } from '@server/core/error.response';
 import { TRole } from '@server/schema/role.schema';
 import { union } from 'lodash';
+import { findAllUsers } from '@server/models/repositories/account.repo';
 
 class AccountService {
   static async signUp(body: z.infer<typeof signUpValidator.shape.body>, device: TDevice) {
@@ -198,7 +200,22 @@ class AccountService {
       ...getInfoData(foundUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'phoneNumber']),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
+
+    console.log(user);
     return user;
+  }
+
+  static async findAllUsers(query: z.infer<typeof findAllUsersValidator.shape.query>) {
+    const { keyword, sortBy, limit, page } = query;
+    return await findAllUsers<keyof TAccount>(keyword, page, limit, sortBy, [
+      '_id',
+      'address',
+      'firstName',
+      'lastName',
+      'phoneNumber',
+      'email',
+      'username',
+    ]);
   }
 }
 

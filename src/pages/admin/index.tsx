@@ -1,6 +1,8 @@
 'use client';
 
-import { useAccountStore } from '@src/features/Account/accountStore';
+import { SCOPES } from '@server/utils/scopes';
+import { useAccountStore } from '@src/features/Account/providers';
+import { withScopes } from '@src/features/Auth/withScopes';
 import Link from 'next/link';
 
 const AdminPage = () => {
@@ -13,4 +15,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default withScopes(AdminPage, [SCOPES.ACCESS_ADMINISTRATION]);

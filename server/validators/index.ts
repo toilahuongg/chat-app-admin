@@ -10,7 +10,12 @@ const validate = (schema: AnyZodObject) => {
       query: req.query,
       params: req.params,
     });
-    if (result.success) return next();
+    if (result.success) {
+      req.body = result.data.body;
+      req.query = result.data.query;
+      req.params = result.data.params;
+      return next();
+    }
     throw new BadRequest(result.error.issues[0].message);
   });
 };

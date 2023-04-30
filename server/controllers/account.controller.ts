@@ -60,6 +60,13 @@ class AccountController {
       metadata: await AccountService.findById(req.accountId!),
     }).send(res);
   }
+
+  static async findAllUsers(req: Request, res: Response) {
+    new OK({
+      message: 'Get users success!',
+      metadata: await AccountService.findAllUsers(req.query as any),
+    }).send(res);
+  }
 }
 
 export default AccountController;

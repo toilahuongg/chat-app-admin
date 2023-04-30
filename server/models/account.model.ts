@@ -4,7 +4,7 @@ import RoleModel from './role.model';
 
 const DOCUMENT_NAME = 'Account';
 const COLLECTION_NAME = 'Accounts';
-const accountSchema = new Schema<TAccount>(
+const AccountSchema = new Schema<TAccount>(
   {
     username: {
       type: String,
@@ -30,6 +30,6 @@ const accountSchema = new Schema<TAccount>(
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );
-const AccountModel = model<TAccount>(DOCUMENT_NAME, accountSchema);
-
+AccountSchema.index({ firstName: 'text', lastName: 'text', username: 'text', email: 'text' });
+const AccountModel = model<TAccount>(DOCUMENT_NAME, AccountSchema);
 export default AccountModel;

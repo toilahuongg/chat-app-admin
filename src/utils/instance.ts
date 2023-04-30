@@ -1,3 +1,5 @@
+'use client';
+
 import axios from 'axios';
 import HEADERS from '@server/utils/headers';
 const instance = axios.create({
@@ -25,7 +27,7 @@ if (typeof window !== undefined) {
     },
     async (err) => {
       const originalConfig = err.config;
-      if (originalConfig.url !== `${process.env.NEXT_PUBLIC_APP_URL}/accounts/login` && err.response) {
+      if (originalConfig?.url !== `${process.env.NEXT_PUBLIC_APP_URL}/accounts/login` && err.response) {
         // Access Token was expired
         if (err.response.status === 401 && !originalConfig._retry) {
           originalConfig._retry = true;

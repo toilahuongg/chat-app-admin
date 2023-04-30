@@ -1,9 +1,5 @@
 import LoginForm from '@src/features/Auth/LoginForm';
 
-export const metadata = {
-  title: 'Login Account',
-};
-
 export default function LoginPage() {
   return (
     <main className="min-h-screen flex-center flex-col">

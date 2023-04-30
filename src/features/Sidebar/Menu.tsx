@@ -3,6 +3,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@heroicons/react/24/outline';
 import { Fragment, useState } from 'react';
 import { NavItem } from './type';
 import Link from 'next/link';
+import { useAccountStore } from '../Account/providers';
 
 function Icon({ isOpen }: { isOpen: boolean }) {
   if (isOpen) return <ChevronUpIcon />;
@@ -13,6 +14,7 @@ type NavMenu = {
   items: NavItem[];
 };
 const NavMenu: React.FC<NavMenu> = ({ items }) => {
+  const scopes = useAccountStore((state) => state.account.scopes);
   const [navActive, setNavActive] = useState<string | null>(null);
 
   const handleOpen = (value: string) => {
@@ -21,22 +23,24 @@ const NavMenu: React.FC<NavMenu> = ({ items }) => {
 
   return (
     <Fragment>
-      {items.map((nav) => {
-        const isActive = nav.id === navActive;
-        const isChild = nav.children && nav.children.length;
-        return (
-          <Accordion key={nav.id} open={isActive} icon={isChild ? <Icon isOpen={isActive} /> : <></>}>
-            <AccordionHeader className="p-2 border-none" onClick={() => handleOpen(nav.id)}>
-              <Typography variant="h6">{nav.link ? <Link href={nav.link}>{nav.title}</Link> : nav.title}</Typography>
-            </AccordionHeader>
-            {isChild && (
-              <AccordionBody className="pl-4 py-0">
-                <NavMenu items={nav.children!} />
-              </AccordionBody>
-            )}
-          </Accordion>
-        );
-      })}
+      {items
+        .filter((item) => item.scopes.some((scope) => scopes.includes(scope)))
+        .map((nav) => {
+          const isActive = nav.id === navActive;
+          const isChild = nav.children && nav.children.length;
+          return (
+            <Accordion key={nav.id} open={isActive} icon={isChild ? <Icon isOpen={isActive} /> : <></>}>
+              <AccordionHeader className="p-2 border-none" onClick={() => handleOpen(nav.id)}>
+                <Typography variant="h6">{nav.link ? <Link href={nav.link}>{nav.title}</Link> : nav.title}</Typography>
+              </AccordionHeader>
+              {isChild && (
+                <AccordionBody className="pl-4 py-0">
+                  <NavMenu items={nav.children!} />
+                </AccordionBody>
+              )}
+            </Accordion>
+          );
+        })}
     </Fragment>
   );
 };

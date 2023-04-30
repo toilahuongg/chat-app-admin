@@ -4,7 +4,7 @@ import { Schema, model } from 'mongoose';
 const DOCUMENT_NAME = 'Role';
 const COLLECTION_NAME = 'Roles';
 
-const roleSchema = new Schema<TRole>(
+const RoleSchema = new Schema<TRole>(
   {
     name: { type: String, required: true, unique: true },
     desc: { type: String },
@@ -13,6 +13,6 @@ const roleSchema = new Schema<TRole>(
   { timestamps: true, collection: COLLECTION_NAME },
 );
 
-const RoleModel = model<TRole>(DOCUMENT_NAME, roleSchema);
+const RoleModel = model<TRole>(DOCUMENT_NAME, RoleSchema);
 
 export default RoleModel;

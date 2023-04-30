@@ -1,5 +1,4 @@
-import { createContext, useContext } from 'react';
-import { createStore, useStore } from 'zustand';
+import { createStore } from 'zustand';
 export interface Account {
   _id: string;
   username: string;
@@ -11,23 +10,13 @@ export interface Account {
   scopes: string[];
 }
 
-type State = {
+export type StateAccount = {
   account: Account;
 };
 
-type AccountStore = ReturnType<typeof createAccountStore>;
-const createAccountStore = (account: Account) => {
-  return createStore<State>(() => ({
+export type AccountStore = ReturnType<typeof createAccountStore>;
+export const createAccountStore = (account: Account) => {
+  return createStore<StateAccount>(() => ({
     account: account,
   }));
 };
-
-const AccountContext = createContext<AccountStore | null>(null);
-export const AccountProvider: React.FC<{ children: React.ReactNode; value: Account }> = ({ children, value }) => (
-  <AccountContext.Provider value={createAccountStore(value)}>{children}</AccountContext.Provider>
-);
-
-export function useAccountStore<T>(selector: (state: State) => T) {
-  const store = useContext(AccountContext)!;
-  return useStore(store, selector);
-}
