@@ -5,7 +5,7 @@ import {
   changeInformationValidator,
   changePasswordValidator,
   loginValidator,
-  signUpValidator,
+  createAccountValidator,
 } from '@server/validators/account.validator';
 import { makeid } from '@server/helpers';
 import mongoose, { Types } from 'mongoose';
@@ -44,7 +44,7 @@ afterEach(async () => {
 });
 
 describe('signUpUser', () => {
-  const bodySchema = signUpValidator.shape.body;
+  const bodySchema = createAccountValidator.shape.body;
   const request = (body: Partial<z.infer<typeof bodySchema>>) =>
     fetch(`${uri}/accounts/signup`, {
       method: 'POST',

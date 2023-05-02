@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const signUpValidator = z.object({
+export const createAccountValidator = z.object({
   body: z
     .object({
       username: z
@@ -10,6 +10,11 @@ export const signUpValidator = z.object({
       email: z
         .string({ required_error: 'Email is required', invalid_type_error: 'Username must be a string' })
         .email({ message: 'Invalid email address' }),
+      firstName: z.string().optional(),
+      lastName: z.string().optional(),
+      address: z.string().optional(),
+      phoneNumber: z.string().optional(),
+      roles: z.array(z.string()).optional(),
       password: z
         .string({ required_error: 'Password is required' })
         .min(6, { message: 'Password must be 6 or more characters long' }),
@@ -45,6 +50,20 @@ export const changePasswordValidator = z.object({
     .refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, {
       message: "Passwords don't match",
     }),
+});
+
+export const findByIdValidator = z.object({
+  params: z.object({
+    id: z.string({ required_error: 'ID is required', invalid_type_error: 'ID must be a string' }),
+  }),
+});
+
+export const editAccountValidator = z.object({
+  body: createAccountValidator.shape.body._def.schema.extend({
+    password: z.string().min(6, { message: 'Password must be 6 or more characters long' }).optional(),
+    confirmPassword: z.string().optional(),
+  }),
+  params: findByIdValidator.shape.params,
 });
 
 export const changeInformationValidator = z.object({

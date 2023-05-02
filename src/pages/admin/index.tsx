@@ -1,5 +1,3 @@
-'use client';
-
 import { SCOPES } from '@server/utils/scopes';
 import { useAccountStore } from '@src/features/Account/providers';
 import { withScopes } from '@src/features/Auth/withScopes';

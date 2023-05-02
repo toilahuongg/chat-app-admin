@@ -83,6 +83,10 @@ export default class KeyService {
     return KeyModel.findOne({ refreshTokensUsed: refreshToken }).lean();
   }
 
+  static deleteByAccountId(_id: Types.ObjectId) {
+    return KeyModel.deleteOne({ account: _id });
+  }
+
   static removeAllRefreshToken(_id: Types.ObjectId) {
     return KeyModel.findOneAndUpdate({ _id }, { devices: [] }, { new: true }).lean();
   }

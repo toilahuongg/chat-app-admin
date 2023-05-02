@@ -13,8 +13,8 @@ export const NAV_MENU: NavItem[] = [
     title: 'Accounts',
     children: [
       {
-        id: 'list-accounts',
-        title: 'List accounts',
+        id: 'account-list',
+        title: 'Account list',
         link: '/admin/accounts',
         scopes: [SCOPES.READ_ACCOUNTS, SCOPES.WRITE_ACCOUNTS],
       },

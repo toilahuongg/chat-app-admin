@@ -11,7 +11,8 @@ import {
   changePasswordValidator,
   findAllUsersValidator,
   loginValidator,
-  signUpValidator,
+  createAccountValidator,
+  editAccountValidator,
 } from '@server/validators/account.validator';
 import { TDevice } from '@server/schema/key.schema';
 import { TRefreshTokenSchema, TAccountEncrypt, TAccount } from '@server/schema/account.schema';
@@ -22,9 +23,10 @@ import { NotFoundError } from '@server/core/error.response';
 import { TRole } from '@server/schema/role.schema';
 import { union } from 'lodash';
 import { findAllUsers } from '@server/models/repositories/account.repo';
+import { SCOPES } from '@server/utils/scopes';
 
 class AccountService {
-  static async signUp(body: z.infer<typeof signUpValidator.shape.body>, device: TDevice) {
+  static async signUp(body: z.infer<typeof createAccountValidator.shape.body>, device: TDevice) {
     const { username, email, password } = body;
     const holderUser = await AccountModel.findOne({
       $or: [
@@ -62,12 +64,41 @@ class AccountService {
       refreshTokensUsed: [],
     });
     return {
-      user: getInfoData(newUser, ['_id', 'username', 'email']),
+      user: getInfoData(newUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']),
       tokens,
       deviceId: newDevice._id,
     };
   }
 
+  static async create(body: z.infer<typeof createAccountValidator.shape.body>, scopes: string[]) {
+    const { username, email, password, address, firstName, lastName, phoneNumber, roles } = body;
+    const holderUser = await AccountModel.findOne({
+      $or: [
+        {
+          username,
+        },
+        { email },
+      ],
+    }).lean();
+
+    if (holderUser) {
+      throw new ConflictError('Username or email already!');
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const newUser = await AccountModel.create({
+      username,
+      email,
+      password: passwordHash,
+      address,
+      firstName,
+      lastName,
+      phoneNumber,
+      roles: scopes.includes(SCOPES.MANAGER_ROLE_ACCOUNTS) ? roles : [],
+    });
+    if (!newUser) throw new ErrorResponse({});
+    return getInfoData(newUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']);
+  }
   /*
     1. Check username or email
     2. Match password
@@ -104,14 +135,22 @@ class AccountService {
     );
     device.refreshToken = tokens.refreshToken;
 
-    const newDevice = await KeyService.updateRefreshToken({
-      account: foundUser._id,
-      publicKey,
-      privateKey,
-      newDevice: device,
-    });
+    const newDevice = keyPair
+      ? await KeyService.updateRefreshToken({
+          account: foundUser._id,
+          publicKey,
+          privateKey,
+          newDevice: device,
+        })
+      : await KeyService.createKeyToken({
+          account: foundUser._id,
+          publicKey,
+          privateKey,
+          devices: [device],
+          refreshTokensUsed: [],
+        });
     const user = {
-      ...getInfoData(foundUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'phoneNumber']),
+      ...getInfoData(foundUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
     return {
@@ -148,6 +187,41 @@ class AccountService {
     return {
       accessToken,
     };
+  }
+
+  static async edit(
+    accountId: Types.ObjectId,
+    body: z.infer<typeof editAccountValidator.shape.body>,
+    scopes: string[],
+  ) {
+    const { email, username, address, firstName, lastName, password, phoneNumber, roles } = body;
+
+    const holderUser = await AccountModel.findOne({
+      $or: [
+        {
+          username,
+        },
+        { email },
+      ],
+    }).lean();
+
+    if (holderUser && holderUser._id.toString() !== accountId.toString()) {
+      throw new ConflictError('Username or email already!');
+    }
+
+    const data: any = {
+      username,
+      email,
+      address,
+      firstName,
+      lastName,
+      phoneNumber,
+      roles: scopes.includes(SCOPES.MANAGER_ROLE_ACCOUNTS) && roles ? roles : [],
+    };
+    if (password) data['passwordHash'] = await bcrypt.hash(password, 10);
+    const newUser = await AccountModel.findByIdAndUpdate({ _id: accountId }, data, { new: true });
+    if (!newUser) throw new ErrorResponse({});
+    return getInfoData(newUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']);
   }
 
   static async changePassword(accountId: Types.ObjectId, body: z.infer<typeof changePasswordValidator.shape.body>) {
@@ -197,12 +271,28 @@ class AccountService {
     const foundUser = await AccountModel.findById(accountId).lean();
     if (!foundUser) throw new NotFoundError('Account not found!');
     const user = {
-      ...getInfoData(foundUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'phoneNumber']),
+      ...getInfoData(foundUser, [
+        '_id',
+        'username',
+        'email',
+        'firstName',
+        'lastName',
+        'phoneNumber',
+        'phoneNumber',
+        'roles',
+      ]),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
 
     console.log(user);
     return user;
+  }
+
+  static async deleteById(accountId: Types.ObjectId) {
+    await KeyService.deleteByAccountId(accountId);
+    await AccountModel.deleteOne({ _id: accountId });
+    console.log(accountId);
+    return { accountId };
   }
 
   static async findAllUsers(query: z.infer<typeof findAllUsersValidator.shape.query>) {
@@ -215,6 +305,7 @@ class AccountService {
       'phoneNumber',
       'email',
       'username',
+      'roles',
     ]);
   }
 }

@@ -11,6 +11,12 @@ export default class RoleController {
     }).send(res);
   }
 
+  static async findAll(req: Request, res: Response) {
+    new OK({
+      metadata: await RoleService.findAll(),
+    }).send(res);
+  }
+
   static async updateRole(req: Request, res: Response) {
     new OK({
       metadata: await RoleService.updateRole(new Types.ObjectId(req.params.role_id), req.body),

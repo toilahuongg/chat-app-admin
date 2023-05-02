@@ -1,5 +1,3 @@
-'use client';
-
 import { Card, Checkbox, Input, Typography } from '@material-tailwind/react';
 import Link from 'next/link';
 import useStore from './loginStore';
@@ -39,12 +37,19 @@ const LoginForm = () => {
         }}
       >
         <div className="mb-4 flex flex-col gap-6">
-          <Input size="lg" label="Email" value={account} onChange={(e) => updateAccount(e.target.value)} />
+          <Input
+            size="lg"
+            label="Email"
+            value={account}
+            onChange={(e) => updateAccount(e.target.value)}
+            autoComplete="username"
+          />
           <Input
             type="password"
             size="lg"
             label="Password"
             value={password}
+            autoComplete="current-password"
             onChange={(e) => updatePassword(e.target.value)}
           />
         </div>

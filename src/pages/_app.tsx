@@ -7,15 +7,16 @@ import '@src/styles/globals.scss';
 import { usePathname } from 'next/navigation';
 import Sidebar from '@src/features/Sidebar';
 import { useMemo } from 'react';
+import { SWRConfig } from 'swr';
 
 const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   const pathname = usePathname();
 
   const children = useMemo(() => {
-    if (pathname.startsWith('/admin'))
+    if (pathname?.startsWith('/admin'))
       return (
         <div className="sectionWrapper">
-          <div className="sidebar">
+          <div className="sidebar shadow-lg shadow-gray-300">
             <Sidebar />
           </div>
           <div className="main">
@@ -28,7 +29,9 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
     <>
       <ThemeProvider>
-        <AccountProvider>{children}</AccountProvider>
+        <SWRConfig value={{ provider: () => new Map() }}>
+          <AccountProvider>{children}</AccountProvider>
+        </SWRConfig>
         <Toaster />
       </ThemeProvider>
     </>

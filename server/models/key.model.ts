@@ -21,7 +21,6 @@ const DeviceSchema = new Schema<TDevice>({
   refreshToken: {
     type: String,
     required: true,
-    unique: true,
   },
 });
 const KeySchema = new Schema<TKey>(

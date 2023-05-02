@@ -1,12 +1,12 @@
 import { Typography } from '@material-tailwind/react';
 import { MouseEventHandler, useMemo } from 'react';
 
-type Heading = {
+export type DataTableHeading = {
   id: string;
   title: React.ReactNode;
 };
 export type DataTable = {
-  headings: Heading[];
+  headings: DataTableHeading[];
   children: React.ReactNode;
   sticky?: boolean;
   selectable?: boolean;
@@ -19,20 +19,22 @@ const DataTable: React.FC<DataTable> = ({ headings, children, sticky }) => {
     return classNames;
   }, [sticky]);
   return (
-    <table className="w-full min-w-[640px] table-auto">
-      <thead>
-        <tr className="border-b border-blue-gray-50">
-          {headings.map(({ id, title }) => (
-            <th key={id} className={thClassnames}>
-              <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
-                {title}
-              </Typography>
-            </th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>{children}</tbody>
-    </table>
+    <div className="overflow-x-auto">
+      <table className="w-full min-w-[640px] table-auto">
+        <thead>
+          <tr className="border-b border-blue-gray-50">
+            {headings.map(({ id, title }) => (
+              <th key={id} className={thClassnames}>
+                <Typography variant="small" className="text-[11px] font-bold uppercase text-blue-gray-400">
+                  {title}
+                </Typography>
+              </th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>{children}</tbody>
+      </table>
+    </div>
   );
 };
 

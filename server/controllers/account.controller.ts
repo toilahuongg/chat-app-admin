@@ -13,6 +13,13 @@ class AccountController {
     }).send(res);
   }
 
+  static async create(req: Request, res: Response) {
+    new CREATED({
+      message: 'Created success!',
+      metadata: await AccountService.create(req.body, req.scopes!),
+    }).send(res);
+  }
+
   static async login(req: Request, res: Response) {
     new OK({
       message: 'Login success!',
@@ -40,6 +47,13 @@ class AccountController {
     }).send(res);
   }
 
+  static async edit(req: Request, res: Response) {
+    new OK({
+      message: 'Edit success!',
+      metadata: await AccountService.edit(new Types.ObjectId(req.params.id), req.body, req.scopes!),
+    }).send(res);
+  }
+
   static async changePassword(req: Request, res: Response) {
     new OK({
       message: 'Change password success!',
@@ -61,9 +75,23 @@ class AccountController {
     }).send(res);
   }
 
+  static async findById(req: Request, res: Response) {
+    new OK({
+      message: 'Get account information success!',
+      metadata: await AccountService.findById(new Types.ObjectId(req.params.id)),
+    }).send(res);
+  }
+
+  static async deleteAccount(req: Request, res: Response) {
+    new OK({
+      message: 'Delete account success!',
+      metadata: await AccountService.deleteById(new Types.ObjectId(req.params.id)),
+    }).send(res);
+  }
+
   static async findAllUsers(req: Request, res: Response) {
     new OK({
-      message: 'Get users success!',
+      message: 'Get accounts success!',
       metadata: await AccountService.findAllUsers(req.query as any),
     }).send(res);
   }

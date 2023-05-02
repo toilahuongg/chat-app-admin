@@ -1,13 +1,10 @@
-import { Account } from './accountStore';
+import { Account } from './store';
 
 export const initialAccount: Account = {
   _id: '',
   username: '',
-  address: '',
   email: '',
-  firstName: '',
-  lastName: '',
-  phoneNumber: '',
+  roles: [],
   scopes: [],
 };
 

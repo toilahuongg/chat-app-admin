@@ -16,11 +16,14 @@
   @apply flex gap-4
 }
 
+.sectionWrapper {
+  @apply bg-gray-50;
+}
 .sidebar {
   @apply w-80 px-4 h-screen sticky top-0 overflow-y-auto;
+  min-width: 20rem;
 }
 .main {
   flex: 1;
-  height: 1000vh;
-  @apply p-4;
+  @apply p-4 overflow-x-hidden;
 }

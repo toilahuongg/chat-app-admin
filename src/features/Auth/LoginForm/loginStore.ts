@@ -1,5 +1,5 @@
 import { TSuccessResponse } from '@server/schema/response.schema';
-import { Account } from '@src/features/Account/accountStore';
+import { Account } from '@src/features/Account/store';
 import axios, { AxiosError } from 'axios';
 import { create } from 'zustand';
 

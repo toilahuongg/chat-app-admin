@@ -1,5 +1,3 @@
-'use client';
-
 import axios from 'axios';
 import HEADERS from '@server/utils/headers';
 const instance = axios.create({

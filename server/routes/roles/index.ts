@@ -1,6 +1,6 @@
 import express from 'express';
 import { authentication } from '@server/middlewares/auth.middleware';
-import { accessScopes, detechRoles } from '@server/middlewares/role.middleware';
+import { accessScopes } from '@server/middlewares/role.middleware';
 import { SCOPES } from '@server/utils/scopes';
 import validate from '@server/validators';
 import { createRoleValidator, deleteRoleValidator, updateRoleValidator } from '@server/validators/role.validator';
@@ -8,7 +8,9 @@ import RoleController from '@server/controllers/role.controller';
 import { detectException } from '@server/middlewares';
 
 const router = express.Router();
-router.use(authentication, detechRoles);
+router.use(authentication);
+
+router.get('/roles', accessScopes([SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]), detectException(RoleController.findAll));
 
 router.post(
   '/roles',
