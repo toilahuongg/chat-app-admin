@@ -14,13 +14,20 @@ export const findAllUsers = async <T>(
 
 export const queryUsers = async <T>(page: number, limit: number, sort: string | undefined, select: T[]) => {
   const skip = getSkipItems(page, limit);
-  return await AccountModel.find()
-    .sort({ _id: sort === 'ctime' ? -1 : 1 })
-    .skip(skip)
-    .limit(limit)
-    .select(getSelectData(select))
-    .lean()
-    .exec();
+  const totalPage = Math.floor((await AccountModel.countDocuments()) / limit);
+  return {
+    items: await AccountModel.find()
+      .sort({ _id: sort === 'old' ? 1 : -1 })
+      .skip(skip)
+      .limit(limit)
+      .select(getSelectData(select))
+      .lean()
+      .exec(),
+    currentPage: page <= 1 ? 1 : page,
+    totalPage: totalPage,
+    prevPage: page <= 1 ? null : page - 1,
+    nextPage: page >= totalPage ? null : page + 1,
+  };
 };
 
 export const searchUsers = async <T>(
@@ -31,11 +38,20 @@ export const searchUsers = async <T>(
   select: T[],
 ) => {
   const skip = getSkipItems(page, limit);
-  return await AccountModel.find({ $text: { $search: text } }, { score: { $meta: 'textScore' } })
-    .sort({ score: 1, _id: sort === 'ctime' ? -1 : 1 })
-    .skip(skip)
-    .limit(limit)
-    .select(getSelectData(select))
-    .lean()
-    .exec();
+  const totalPage = Math.floor(
+    (await AccountModel.countDocuments({ $text: { $search: text } }, { score: { $meta: 'textScore' } })) / limit,
+  );
+  return {
+    items: await AccountModel.find({ $text: { $search: text } }, { score: { $meta: 'textScore' } })
+      .sort({ score: 1, _id: sort === 'ctime' ? -1 : 1 })
+      .skip(skip)
+      .limit(limit)
+      .select(getSelectData(select))
+      .lean()
+      .exec(),
+    currentPage: page <= 1 ? 1 : page,
+    totalPage: totalPage,
+    prevPage: page <= 1 ? null : page - 1,
+    nextPage: page >= totalPage ? null : page + 1,
+  };
 };

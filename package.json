@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "ts-node --files  -r tsconfig-paths/register --project ./tsconfig.server.json ./server/index.ts",
     "install": "ts-node --files  -r tsconfig-paths/register --project ./tsconfig.server.json ./server/utils/install.ts",
+    "seed": "ts-node --files  -r tsconfig-paths/register --project ./tsconfig.server.json ./server/utils/seed.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

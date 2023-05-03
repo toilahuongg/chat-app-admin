@@ -19,12 +19,12 @@ import { SCOPES } from '@server/utils/scopes';
 
 const router = express.Router();
 
-router.post(
-  '/accounts/signup',
-  detectDevice,
-  validate(createAccountValidator),
-  detectException(AccountController.signUp),
-);
+// router.post(
+//   '/accounts/signup',
+//   detectDevice,
+//   validate(createAccountValidator),
+//   detectException(AccountController.signUp),
+// );
 
 router.post('/accounts/login', detectDevice, validate(loginValidator), detectException(AccountController.login));
 

@@ -1,19 +1,7 @@
 import { produce } from 'immer';
 import { createStore } from 'zustand';
 import { initialAccount } from './constants';
-export interface Account {
-  _id: string;
-  username: string;
-  firstName?: string;
-  lastName?: string;
-  email: string;
-  phoneNumber?: string;
-  address?: string;
-  password?: string;
-  confirmPassword?: string;
-  roles: string[];
-  scopes: string[];
-}
+import { Account } from './types';
 
 export type StateAccount = {
   account: Account;

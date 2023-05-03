@@ -59,10 +59,14 @@ export const findByIdValidator = z.object({
 });
 
 export const editAccountValidator = z.object({
-  body: createAccountValidator.shape.body._def.schema.extend({
-    password: z.string().min(6, { message: 'Password must be 6 or more characters long' }).optional(),
-    confirmPassword: z.string().optional(),
-  }),
+  body: createAccountValidator.shape.body._def.schema
+    .extend({
+      password: z.string().min(6, { message: 'Password must be 6 or more characters long' }).optional(),
+      confirmPassword: z.string().optional(),
+    })
+    .refine(({ password, confirmPassword }) => password === confirmPassword, {
+      message: "Passwords don't match",
+    }),
   params: findByIdValidator.shape.params,
 });
 

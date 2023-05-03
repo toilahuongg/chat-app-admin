@@ -1,4 +1,4 @@
-import { Account } from '@src/features/Account/store';
+import { Account } from '@src/features/Account/types';
 import { create } from 'zustand';
 
 type State = {

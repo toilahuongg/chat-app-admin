@@ -2,7 +2,7 @@ import { PencilSquareIcon, DocumentDuplicateIcon, TrashIcon } from '@heroicons/r
 import { useRouter } from 'next/router';
 import { IconButton } from '@material-tailwind/react';
 import DataTable from '@src/components/DataTable';
-import { Account } from '../store';
+import { Account } from '../types';
 
 type AccountListItem = {
   account: Account;

@@ -1,4 +1,4 @@
-import { Account } from './store';
+import { Account } from './types';
 
 export const initialAccount: Account = {
   _id: '',

@@ -1,5 +1,5 @@
 import { TSuccessResponse } from '@server/schema/response.schema';
-import { Account } from '@src/features/Account/store';
+import { Account } from '@src/features/Account/types';
 import instance from '@src/utils/instance';
 import { useMemo } from 'react';
 import { useSWRConfig } from 'swr';
