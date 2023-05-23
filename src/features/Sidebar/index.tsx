@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { NAV_MENU } from './constant';
 import NavMenu from './Menu';
 import { Typography } from '@material-tailwind/react';
@@ -39,7 +38,7 @@ const Sidebar = () => {
   };
 
   return (
-    <Fragment>
+    <div className="sidebar shadow-md shadow-gray-300 pt-4">
       <NavMenu items={NAV_MENU} />
       <div className="absolute bottom-0 left-0 w-full p-4 flex items-center justify-between">
         <div className="flex items-center gap-2 cursor-pointer" onClick={handleLogout}>
@@ -56,7 +55,7 @@ const Sidebar = () => {
           </div>
         </div>
       </div>
-    </Fragment>
+    </div>
   );
 };
 

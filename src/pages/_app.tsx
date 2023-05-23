@@ -16,11 +16,11 @@ const App: React.FC<AppProps> = ({ Component, pageProps }) => {
     if (pathname?.startsWith('/admin'))
       return (
         <div className="sectionWrapper">
-          <div className="sidebar shadow-lg shadow-gray-300">
-            <Sidebar />
-          </div>
+          <Sidebar />
           <div className="main">
-            <Component {...pageProps} />
+            <div className="max-w-5xl mx-auto">
+              <Component {...pageProps} />
+            </div>
           </div>
         </div>
       );

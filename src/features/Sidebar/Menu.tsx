@@ -30,7 +30,7 @@ const NavMenu: React.FC<NavMenu> = ({ items }) => {
           const isChild = nav.children && nav.children.length;
           return (
             <Accordion key={nav.id} open={isActive} icon={isChild ? <Icon isOpen={isActive} /> : <></>}>
-              <AccordionHeader className="p-2 border-none" onClick={() => handleOpen(nav.id)}>
+              <AccordionHeader className="p-1 border-none" onClick={() => handleOpen(nav.id)}>
                 <Typography variant="h6">{nav.link ? <Link href={nav.link}>{nav.title}</Link> : nav.title}</Typography>
               </AccordionHeader>
               {isChild && (

@@ -1,12 +1,13 @@
 import { TSuccessResponse } from '@server/schema/response.schema';
 import { SCOPES } from '@server/utils/scopes';
-import { Account, AccountStore, StateAccount, createAccountStore } from '@src/features/Account/store';
+import { AccountStore, StateAccount, createAccountStore } from '@src/features/Account/store';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useContext } from 'react';
 import { useStore } from 'zustand';
 import { PATH_ADMIN, PATH_HOMEPAGE, PATH_SIGNIN } from './constants';
 import useSWR from 'swr';
 import instance from '@src/utils/instance';
+import { Account } from './types';
 
 const AccountContext = createContext<AccountStore | null>(null);
 

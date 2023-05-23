@@ -98,6 +98,7 @@ const ListAccounts = () => {
           containerProps={{
             className: 'min-w-0',
           }}
+          placeholder="Search..."
         />
         <IconButton size="sm" className="!absolute right-1 top-1 rounded">
           <MagnifyingGlassIcon color="white" className="w-4 h-4" />

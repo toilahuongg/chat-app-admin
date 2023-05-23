@@ -27,7 +27,7 @@ const CreateAccountPage = () => {
         </Button>
       }
     >
-      <Card className="mt-4">
+      <Card>
         <CardBody>
           <EditAccountForm />
         </CardBody>

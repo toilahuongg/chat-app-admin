@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+// @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+
 * {
   padding: 0;
   margin: 0;
@@ -20,7 +22,7 @@
   @apply bg-gray-50;
 }
 .sidebar {
-  @apply w-80 px-4 h-screen sticky top-0 overflow-y-auto;
+  @apply w-80 px-4 h-screen sticky top-0 overflow-y-auto bg-white;
   min-width: 20rem;
 }
 .main {

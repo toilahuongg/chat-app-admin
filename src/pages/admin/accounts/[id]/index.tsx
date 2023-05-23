@@ -50,11 +50,7 @@ const EditAccountPage = ({ params }: InferGetServerSidePropsType<typeof getServe
         </Button>
       }
     >
-      <Card className="mt-4">
-        <CardBody>
-          <EditAccountForm />
-        </CardBody>
-      </Card>
+      <EditAccountForm />
     </Page>
   );
 };

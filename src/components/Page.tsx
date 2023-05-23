@@ -12,7 +12,7 @@ export type Page = {
 
 const Page: React.FC<Page> = ({ children, footerActions, headerActions, title, backUrl }) => {
   return (
-    <div className="page__wrapper">
+    <div className="page__wrapper pb-4">
       <div className="page__header flex items-center justify-between">
         <div className="flex items-center gap-4">
           {backUrl && (

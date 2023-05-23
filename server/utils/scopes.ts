@@ -6,6 +6,8 @@ export const SCOPES = {
   MANAGER_KEY_ACCOUNTS: 'manager_key_accounts',
   READ_ROLES: 'read_roles',
   WRITE_ROLES: 'write_roles',
+  WRITE_PRODUCTS: 'write_products',
+  READ_PRODUCTS: 'read_products',
 };
 
 export type TScopes = typeof SCOPES;
