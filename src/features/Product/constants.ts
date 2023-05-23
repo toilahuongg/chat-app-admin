@@ -8,7 +8,7 @@ export const initialProduct: Product = {
   price: 0,
   compareAtPrice: 0,
   slug: '',
-  status: 'draft',
+  status: 'active',
   options: [],
   tags: [],
   variants: [],
@@ -25,3 +25,14 @@ export const initialOptionItem = (): ProductOptionItem => ({
   label: '',
   value: '',
 });
+
+export const OPTIONS_STATUS = [
+  {
+    label: 'Active',
+    value: 'active',
+  },
+  {
+    label: 'Draft',
+    value: 'draft',
+  },
+];

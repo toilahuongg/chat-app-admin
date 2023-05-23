@@ -6,15 +6,17 @@ import {
   useSensor,
   useSensors,
   DragEndEvent,
+  DragStartEvent,
 } from '@dnd-kit/core';
 import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 export type Sortable = {
   ids: (number | string)[];
-  onDragEnd?(event: DragEndEvent): void;
   children: React.ReactNode;
+  onDragEnd?(event: DragEndEvent): void;
+  onDragStart?(event: DragStartEvent): void;
 };
-const Sortable: React.FC<Sortable> = ({ ids, children, onDragEnd }) => {
+const Sortable: React.FC<Sortable> = ({ ids, children, onDragEnd, onDragStart }) => {
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
@@ -23,7 +25,7 @@ const Sortable: React.FC<Sortable> = ({ ids, children, onDragEnd }) => {
   );
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={onDragEnd}>
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <SortableContext items={ids} strategy={verticalListSortingStrategy}>
         {children}
       </SortableContext>

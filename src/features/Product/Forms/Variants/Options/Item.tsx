@@ -8,8 +8,10 @@ import { useProductStore } from '@src/features/Product/store';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-type TProps = ProductOption;
-const OptionItem: React.FC<TProps> = ({ id, name }) => {
+type TProps = ProductOption & {
+  globalDragging: boolean;
+};
+const OptionItem: React.FC<TProps> = ({ id, name, globalDragging }) => {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
 
   const style = {
@@ -25,7 +27,7 @@ const OptionItem: React.FC<TProps> = ({ id, name }) => {
   const { addOptionValue, removeOption, setOptionName } = useProductStore((state) => state.options);
   return (
     <div className="border-t px-4 border-gray-200" style={style}>
-      {isEdit && !isDragging ? (
+      {isEdit && !globalDragging ? (
         <div className="py-4">
           <div className="flex items-center gap-4">
             <span className="cursor-move" ref={setNodeRef} {...attributes} {...listeners}>
