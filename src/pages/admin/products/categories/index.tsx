@@ -3,24 +3,24 @@ import { SCOPES } from '@server/utils/scopes';
 import Button from '@src/components/Button';
 import Page from '@src/components/Page';
 import { withScopes } from '@src/features/Auth/withScopes';
-import ListRoles from '@src/features/Role/components/List';
+import ListProductCategories from '@src/features/Product/Category/components/List';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-const RolePage = () => {
+const ProductCategoryPage = () => {
   return (
     <Page
-      title="Role list"
+      title="Product category list"
       headerActions={
-        <Link href="/admin/roles/create">
-          <Button>New role</Button>
+        <Link href="/admin/products/categories/create">
+          <Button>New category</Button>
         </Link>
       }
     >
       <Card>
         <CardBody>
           <Suspense fallback="Loading ...">
-            <ListRoles />
+            <ListProductCategories />
           </Suspense>
         </CardBody>
       </Card>
@@ -28,4 +28,4 @@ const RolePage = () => {
   );
 };
 
-export default withScopes(RolePage, [SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]);
+export default withScopes(ProductCategoryPage, [SCOPES.READ_PRODUCT_CATEGORIES, SCOPES.WRITE_PRODUCT_CATEGORIES]);

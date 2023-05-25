@@ -11,7 +11,7 @@ type Arg = {
 const deleteRole = (url: string, { arg }: { arg: Arg }) =>
   instance.delete<TSuccessResponse<{ roleId: string }>>(`${url}/${arg.id}`);
 
-export const useDeleteRole = () => {
+export const useDeleteProductCategory = () => {
   const { mutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation('/roles', deleteRole, { revalidate: false });
 

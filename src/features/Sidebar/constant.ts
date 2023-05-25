@@ -19,9 +19,9 @@ export const NAV_MENU: NavItem[] = [
         scopes: [SCOPES.READ_PRODUCTS, SCOPES.WRITE_PRODUCTS],
       },
       {
-        id: 'create',
-        title: 'Create',
-        link: '/admin/products/create',
+        id: 'category-list',
+        title: 'Category list',
+        link: '/admin/products/categories',
         scopes: [SCOPES.WRITE_PRODUCTS],
       },
     ],

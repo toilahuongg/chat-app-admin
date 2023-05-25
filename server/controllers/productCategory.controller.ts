@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 export default class ProductCategoryController {
   static async createProductCategory(req: Request, res: Response) {
     new CREATED({
-      metadata: await ProductCategoryService.createProductCategory(req.body),
+      metadata: await ProductCategoryService.createProductCategory(req.body, req.accountId!),
     }).send(res);
   }
 

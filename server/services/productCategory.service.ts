@@ -18,8 +18,11 @@ export default class ProductCategoryService {
     return newProductCategory;
   }
 
-  static async createProductCategory(body: z.infer<typeof createProductCategoryValidator.shape.body>) {
-    const newProductCategory = await ProductCategoryModel.create({ ...body });
+  static async createProductCategory(
+    body: z.infer<typeof createProductCategoryValidator.shape.body>,
+    accountId: Types.ObjectId,
+  ) {
+    const newProductCategory = await ProductCategoryModel.create({ ...body, account: accountId });
     return newProductCategory;
   }
 

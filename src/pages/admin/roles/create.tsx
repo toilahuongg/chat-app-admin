@@ -4,8 +4,8 @@ import { withScopes } from '@src/features/Auth/withScopes';
 import Button from '@src/components/Button';
 import { useRoleStore } from '@src/features/Role/store';
 import { toastResponse } from '@src/utils/toast';
-import EditRoleForm from '@src/features/Role/Forms/Edit';
-import useCreateRole from '@src/hooks/roles/useCreateRole';
+import EditRoleForm from '@src/features/Role/components/Forms/Edit';
+import { useCreateRole } from '@src/hooks';
 
 const CreateRolePage = () => {
   const { role } = useRoleStore((state) => state);

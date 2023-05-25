@@ -7,7 +7,7 @@ import useSWRMutation from 'swr/mutation';
 
 const createRole = (url: string, { arg }: { arg: Role }) => instance.post<TSuccessResponse<Role>>(`${url}`, arg);
 
-const useCreateRole = () => {
+export const useCreateRole = () => {
   const { mutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation('/roles', createRole, { revalidate: false });
 
@@ -29,5 +29,3 @@ const useCreateRole = () => {
     [trigger, isMutating, mutate],
   );
 };
-
-export default useCreateRole;

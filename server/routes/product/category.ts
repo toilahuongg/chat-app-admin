@@ -12,9 +12,6 @@ import ProductCategoryController from '@server/controllers/productCategory.contr
 import { accessScopes } from '@server/middlewares/role.middleware';
 
 const router = express.Router();
-router.get('/products/categories', detectException(ProductCategoryController.findAll));
-router.get('/products/categories/:id', detectException(ProductCategoryController.findById));
-
 router.use(authentication);
 
 router.get(

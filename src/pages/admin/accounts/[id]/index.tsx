@@ -1,7 +1,7 @@
 import { TSuccessResponse } from '@server/schema/response.schema';
 import Button from '@src/components/Button';
 import Page from '@src/components/Page';
-import EditAccountForm from '@src/features/Account/Forms/Edit';
+import EditAccountForm from '@src/features/Account/components/Forms/Edit';
 import { accountStore } from '@src/features/Account/store';
 import { Account } from '@src/features/Account/types';
 import { useEditAccount } from '@src/hooks';

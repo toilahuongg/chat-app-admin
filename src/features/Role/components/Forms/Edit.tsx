@@ -12,7 +12,7 @@ const EditRoleForm = () => {
         {LIST_SCOPES.map(({ name, scopes }) => (
           <Card key={name}>
             <Card.Section title={name}>
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex flex-wrap gap-4">
                 {scopes.map((scope) => (
                   <div key={scope}>
                     <Checkbox
@@ -36,7 +36,6 @@ const EditRoleForm = () => {
                 variant="outlined"
                 size="lg"
                 label="Name"
-                type="Name"
                 value={role.name}
                 onChange={(e) => setName(e.currentTarget.value)}
                 autoComplete="role-name"

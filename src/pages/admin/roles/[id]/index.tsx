@@ -1,10 +1,10 @@
 import { TSuccessResponse } from '@server/schema/response.schema';
 import Button from '@src/components/Button';
 import Page from '@src/components/Page';
-import EditRoleForm from '@src/features/Role/Forms/Edit';
+import EditRoleForm from '@src/features/Role/components/Forms/Edit';
 import { roleStore } from '@src/features/Role/store';
 import { Role } from '@src/features/Role/types';
-import { useEditRole } from '@src/hooks/roles/useEditRole';
+import { useEditRole } from '@src/hooks';
 import instance from '@src/utils/instance';
 import { toastResponse } from '@src/utils/toast';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
