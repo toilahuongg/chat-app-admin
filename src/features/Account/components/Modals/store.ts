@@ -1,5 +1,5 @@
 import { createStore, useStore } from 'zustand';
-import { Account } from '../types';
+import { Account } from '../../types';
 import { produce } from 'immer';
 
 type DeleteAccountState = {

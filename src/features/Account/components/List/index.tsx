@@ -13,9 +13,9 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import ModalDeleteAccount from '../Modals/Delete';
 import { useDeleteAccountStore } from '../Modals/store';
-import { useAccountStore } from '../providers';
-import { PaginateAccount } from '../types';
-import AccountListItem from './Item';
+import AccountItem from './Item';
+import { PaginateAccount } from '../../types';
+import { useAccountStore } from '../../providers';
 
 const ListAccounts = () => {
   const router = useRouter();
@@ -104,7 +104,7 @@ const ListAccounts = () => {
       </div>
       <DataTable headings={headings} sticky>
         {accounts!.map((item) => (
-          <AccountListItem
+          <AccountItem
             key={item._id}
             account={item}
             isAccessWrite={isAccessWrite}

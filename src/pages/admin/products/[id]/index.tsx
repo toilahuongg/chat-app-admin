@@ -1,6 +1,6 @@
 import Button from '@src/components/Button';
 import Page from '@src/components/Page';
-import EditProductForm from '@src/features/Product/Forms/Edit';
+import EditProductForm from '@src/features/Product/components/Forms/Edit';
 import { GetServerSideProps, InferGetServerSidePropsType } from 'next';
 import { ParsedUrlQuery } from 'querystring';
 

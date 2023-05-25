@@ -1,6 +1,6 @@
 import { Input, Textarea } from '@material-tailwind/react';
 import Card from '@src/components/Card';
-import { useProductStore } from '../store';
+import { useProductStore } from '../../store';
 
 const ProductTitleDescription = () => {
   const { product, setDescription, setTitle } = useProductStore((state) => state);

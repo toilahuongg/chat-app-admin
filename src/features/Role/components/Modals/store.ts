@@ -1,6 +1,6 @@
 import { createStore, useStore } from 'zustand';
 import { produce } from 'immer';
-import { Role } from '../types';
+import { Role } from '../../types';
 
 type DeleteRoleState = {
   isShow: boolean;

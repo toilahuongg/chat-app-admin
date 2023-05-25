@@ -1,8 +1,7 @@
 import { Checkbox, Input, Textarea } from '@material-tailwind/react';
-
 import Card from '@src/components/Card';
-import { useRoleStore } from '../store';
-import { LIST_SCOPES } from '../constants';
+import { LIST_SCOPES } from '../../constants';
+import { useRoleStore } from '../../store';
 
 const EditRoleForm = () => {
   const { role, setDesc, setName, toggleScrope } = useRoleStore((state) => state);

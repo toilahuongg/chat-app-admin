@@ -2,7 +2,7 @@ import Card from '@src/components/Card';
 import OptionList from './Options/List';
 import { Button } from '@material-tailwind/react';
 import { PlusSmallIcon } from '@heroicons/react/24/outline';
-import { useProductStore } from '../../store';
+import { useProductStore } from '../../../store';
 
 const VariantsForm = () => {
   const addOption = useProductStore((state) => state.options.addOption);

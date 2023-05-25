@@ -284,14 +284,12 @@ class AccountService {
       scopes: await AccountService.getScopesById(foundUser._id),
     };
 
-    console.log(user);
     return user;
   }
 
   static async deleteById(accountId: Types.ObjectId) {
     await KeyService.deleteByAccountId(accountId);
     await AccountModel.deleteOne({ _id: accountId });
-    console.log(accountId);
     return { accountId };
   }
 

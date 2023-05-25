@@ -1,24 +1,24 @@
-import { Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
-import { useDeleteAccountStore } from './store';
+import { Dialog, DialogBody, DialogFooter, DialogHeader } from '@material-tailwind/react';
 import Button from '@src/components/Button';
-import useDeleteAccount from '@src/hooks/accounts/useDeleteAccount';
 import { toastResponse } from '@src/utils/toast';
+import { useDeleteRoleStore } from './store';
+import useDeleteRole from '@src/hooks/roles/useDeleteRole';
 
-const ModalDeleteAccount = () => {
-  const { isShow, account, toggleShow } = useDeleteAccountStore((state) => state);
+const ModalDeleteRole = () => {
+  const { isShow, role, toggleShow } = useDeleteRoleStore((state) => state);
 
-  const { deleteAccount, isMutating } = useDeleteAccount();
+  const { deleteRole, isMutating } = useDeleteRole();
 
-  if (!account) return <></>;
+  if (!role) return <></>;
 
   const handleDelete = async () => {
-    toastResponse(deleteAccount(account._id));
+    toastResponse(deleteRole(role._id));
     toggleShow();
   };
 
   return (
     <Dialog open={isShow} handler={toggleShow}>
-      <DialogHeader>Delete account: {account.username} </DialogHeader>
+      <DialogHeader>Delete name: {role?.name} </DialogHeader>
       <DialogBody> Are you sure delete this acccount ?</DialogBody>
       <DialogFooter>
         <Button variant="gradient" color="green" onClick={toggleShow} className="mr-1">
@@ -32,4 +32,4 @@ const ModalDeleteAccount = () => {
   );
 };
 
-export default ModalDeleteAccount;
+export default ModalDeleteRole;

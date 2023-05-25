@@ -1,5 +1,5 @@
 import { TSuccessResponse } from '@server/schema/response.schema';
-import { Account } from '@src/features/Account/types';
+import { Role } from '@src/features/Role/types';
 import instance from '@src/utils/instance';
 import { useMemo } from 'react';
 import { useSWRConfig } from 'swr';
@@ -8,22 +8,22 @@ import useSWRMutation from 'swr/mutation';
 type Arg = {
   id: string;
 };
-const deleteAccount = (url: string, { arg }: { arg: Arg }) =>
-  instance.delete<TSuccessResponse<{ accountId: string }>>(`${url}/${arg.id}`);
+const deleteRole = (url: string, { arg }: { arg: Arg }) =>
+  instance.delete<TSuccessResponse<{ roleId: string }>>(`${url}/${arg.id}`);
 
-const useDeleteAccount = () => {
+const useDeleteRole = () => {
   const { mutate } = useSWRConfig();
-  const { trigger, isMutating } = useSWRMutation('/accounts', deleteAccount, { revalidate: false });
+  const { trigger, isMutating } = useSWRMutation('/roles', deleteRole, { revalidate: false });
 
   return useMemo(
     () => ({
-      deleteAccount: async (id: string) => {
+      deleteRole: async (id: string) => {
         const response = await trigger({ id });
-        mutate('/accounts', () => response?.data.metadata.accountId, {
-          populateCache: (id: string, accounts: Account[]) => {
+        mutate('/roles', () => response?.data.metadata.roleId, {
+          populateCache: (id: string, roles: Role[]) => {
             // filter the list, and return it with the updated item
-            const filteredAccounts = accounts.filter((account) => account._id !== id);
-            return [...filteredAccounts];
+            const filteredRoles = roles.filter((role) => role._id !== id);
+            return [...filteredRoles];
           },
           revalidate: false,
         });
@@ -35,4 +35,4 @@ const useDeleteAccount = () => {
   );
 };
 
-export default useDeleteAccount;
+export default useDeleteRole;

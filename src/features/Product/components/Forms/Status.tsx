@@ -1,8 +1,8 @@
 import { Option, Select } from '@material-tailwind/react';
 import Card from '@src/components/Card';
-import { OPTIONS_STATUS } from '../constants';
-import { useProductStore } from '../store';
-import { ProductStatus } from '../types';
+import { OPTIONS_STATUS } from '../../constants';
+import { useProductStore } from '../../store';
+import { ProductStatus } from '../../types';
 
 const ProductStatus = () => {
   const { product, setStatus } = useProductStore((state) => state);

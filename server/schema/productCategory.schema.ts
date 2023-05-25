@@ -4,7 +4,7 @@ import { z } from 'zod';
 export const productCategorySchema = z.object({
   _id: z.instanceof(Types.ObjectId),
   title: z.string(),
-  description: z.string(),
+  description: z.string().optional(),
   slug: z.string(),
   account: z.instanceof(Types.ObjectId),
 });

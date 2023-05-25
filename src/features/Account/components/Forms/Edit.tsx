@@ -1,13 +1,13 @@
 import { Checkbox, Input } from '@material-tailwind/react';
 import { TSuccessResponse } from '@server/schema/response.schema';
 import { SCOPES } from '@server/utils/scopes';
+import Card from '@src/components/Card';
 import { Role } from '@src/features/Role/types';
 import instance from '@src/utils/instance';
 import useSWR from 'swr';
 import { useStore } from 'zustand';
-import { useAccountStore } from '../providers';
-import { accountStore } from '../store';
-import Card from '@src/components/Card';
+import { useAccountStore } from '../../providers';
+import { accountStore } from '../../store';
 
 const EditAccountForm = () => {
   const { data, isLoading } = useSWR('/roles', (url) =>

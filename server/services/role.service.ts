@@ -29,6 +29,6 @@ export default class RoleService {
   static async deleteRole(id: Types.ObjectId) {
     const roleUpdated = await RoleModel.findByIdAndRemove(id);
     if (!roleUpdated) throw new NotFoundError('Role not found');
-    return {};
+    return { roleId: roleUpdated._id };
   }
 }

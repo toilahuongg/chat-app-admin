@@ -1,6 +1,6 @@
 import { Input } from '@material-tailwind/react';
 import Card from '@src/components/Card';
-import { useProductStore } from '../store';
+import { useProductStore } from '../../store';
 
 const ProductPrice = () => {
   const { product, setCompareAtPrice, setPrice } = useProductStore((state) => state);

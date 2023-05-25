@@ -2,14 +2,14 @@ import { PencilSquareIcon, DocumentDuplicateIcon, TrashIcon } from '@heroicons/r
 import { useRouter } from 'next/router';
 import { IconButton } from '@material-tailwind/react';
 import DataTable from '@src/components/DataTable';
-import { Role } from '../types';
+import { Role } from '../../types';
 
-type RoleListItem = {
+type RoleItem = {
   role: Role;
   isAccessWrite: boolean;
   onDelete: () => void;
 };
-const RoleListItem: React.FC<RoleListItem> = ({ role, isAccessWrite, onDelete }) => {
+const RoleItem: React.FC<RoleItem> = ({ role, isAccessWrite, onDelete }) => {
   const { _id, name, desc } = role;
   const router = useRouter();
   return (
@@ -40,4 +40,4 @@ const RoleListItem: React.FC<RoleListItem> = ({ role, isAccessWrite, onDelete })
   );
 };
 
-export default RoleListItem;
+export default RoleItem;

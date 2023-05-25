@@ -2,15 +2,16 @@ import { PencilSquareIcon, DocumentDuplicateIcon, TrashIcon } from '@heroicons/r
 import { useRouter } from 'next/router';
 import { IconButton } from '@material-tailwind/react';
 import DataTable from '@src/components/DataTable';
-import { Account } from '../types';
+import { Account } from '../../types';
 
-type AccountListItem = {
+type AccountItem = {
   account: Account;
   isAccessWrite: boolean;
   roles: string[];
   onDelete: () => void;
 };
-const AccountListItem: React.FC<AccountListItem> = ({ account, isAccessWrite, roles, onDelete }) => {
+
+const AccountItem: React.FC<AccountItem> = ({ account, isAccessWrite, roles, onDelete }) => {
   const { _id, username, email } = account;
   const router = useRouter();
   return (
@@ -42,4 +43,4 @@ const AccountListItem: React.FC<AccountListItem> = ({ account, isAccessWrite, ro
   );
 };
 
-export default AccountListItem;
+export default AccountItem;

@@ -15,7 +15,12 @@ export const LIST_SCOPES = [
   },
   {
     name: 'Product',
-    scopes: [SCOPES.READ_PRODUCTS, SCOPES.WRITE_PRODUCTS],
+    scopes: [
+      SCOPES.READ_PRODUCTS,
+      SCOPES.WRITE_PRODUCTS,
+      SCOPES.READ_PRODUCT_CATEGORIES,
+      SCOPES.WRITE_PRODUCT_CATEGORIES,
+    ],
   },
   {
     name: 'Role',
