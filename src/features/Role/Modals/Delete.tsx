@@ -1,7 +1,7 @@
 import { Dialog, DialogHeader, DialogBody, DialogFooter } from '@material-tailwind/react';
 import { useDeleteAccountStore } from './store';
 import Button from '@src/components/Button';
-import { useDeleteAccount } from '@src/hooks';
+import useDeleteAccount from '@src/hooks/accounts/useDeleteAccount';
 import { toastResponse } from '@src/utils/toast';
 
 const ModalDeleteAccount = () => {

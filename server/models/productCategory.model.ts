@@ -1,10 +1,10 @@
-import { TCollection } from '@server/schema/collection.schema';
+import { TProductCategory } from '@server/schema/productCategory.schema';
 import { Schema, model } from 'mongoose';
 import AccountModel from './account.model';
 
-const DOCUMENT_NAME = 'Collection';
-const COLLECTION_NAME = 'Collections';
-const CollectionSchema = new Schema<TCollection>(
+const DOCUMENT_NAME = 'ProductCategory';
+const COLLECTION_NAME = 'ProductCategories';
+const ProductCategorySchema = new Schema<TProductCategory>(
   {
     title: { type: String },
     description: { type: String },
@@ -17,5 +17,5 @@ const CollectionSchema = new Schema<TCollection>(
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );
-const CollectionModel = model<TCollection>(DOCUMENT_NAME, CollectionSchema);
-export default CollectionModel;
+const ProductCategoryModel = model<TProductCategory>(DOCUMENT_NAME, ProductCategorySchema);
+export default ProductCategoryModel;

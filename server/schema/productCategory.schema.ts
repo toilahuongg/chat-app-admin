@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 import { z } from 'zod';
 
-export const collectionSchema = z.object({
+export const productCategorySchema = z.object({
   _id: z.instanceof(Types.ObjectId),
   title: z.string(),
   description: z.string(),
@@ -9,4 +9,4 @@ export const collectionSchema = z.object({
   account: z.instanceof(Types.ObjectId),
 });
 
-export type TCollection = z.infer<typeof collectionSchema>;
+export type TProductCategory = z.infer<typeof productCategorySchema>;

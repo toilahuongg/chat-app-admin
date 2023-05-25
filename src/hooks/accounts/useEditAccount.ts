@@ -10,9 +10,9 @@ type Arg = {
   body: Account;
 };
 const editAccount = (url: string, { arg: { id, body } }: { arg: Arg }) =>
-  instance.put<TSuccessResponse<{ accountId: string }>>(`${url}/${id}`, body);
+  instance.put<TSuccessResponse<Account>>(`${url}/${id}`, body);
 
-const useEditAccount = () => {
+export const useEditAccount = () => {
   const { mutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation('/accounts', editAccount, { revalidate: false });
 
@@ -37,5 +37,3 @@ const useEditAccount = () => {
     [trigger, isMutating, mutate],
   );
 };
-
-export default useEditAccount;

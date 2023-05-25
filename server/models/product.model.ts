@@ -1,13 +1,7 @@
-import {
-  TProduct,
-  TProductOption,
-  TProductOptionItem,
-  TProductVariant,
-  TProductVariantOption,
-} from '@server/schema/product.schema';
+import { TProduct, TProductOption, TProductOptionItem, TProductVariant } from '@server/schema/product.schema';
 import { Schema, model } from 'mongoose';
 import AccountModel from './account.model';
-import CollectionModel from './collection.model';
+import CollectionModel from './productCategory.model';
 
 const DOCUMENT_NAME = 'Product';
 const COLLECTION_NAME = 'Products';
@@ -22,15 +16,12 @@ const OptionSchema = new Schema<TProductOption>({
   values: [OptionItemSchema],
 });
 
-const VariantOptionSchema = new Schema<TProductVariantOption>({
-  valueId: { type: Schema.Types.ObjectId },
-});
 const VariantSchema = new Schema<TProductVariant>({
   title: { type: String },
   price: { type: Number },
   compareAtPrice: { type: Number },
   sku: { type: String },
-  options: [VariantOptionSchema],
+  options: { type: [String] },
 });
 
 const ProductSchema = new Schema<TProduct>(

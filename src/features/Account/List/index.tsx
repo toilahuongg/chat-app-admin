@@ -1,10 +1,10 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
-import { IconButton, Input } from '@material-tailwind/react';
+import { Input } from '@material-tailwind/react';
 import { TSuccessResponse } from '@server/schema/response.schema';
 import { SCOPES } from '@server/utils/scopes';
 import DataTable from '@src/components/DataTable';
 import Pagination from '@src/components/Pagination';
-import { Role } from '@src/features/Role/store';
+import { Role } from '@src/features/Role/types';
 import useDebounce from '@src/hooks/useDebounce';
 import useQueryParams from '@src/hooks/useQueryParams';
 import instance from '@src/utils/instance';
@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import ModalDeleteAccount from '../Modals/Delete';
-import { useDeleteAccountStore } from '../Modals/modalStore';
+import { useDeleteAccountStore } from '../Modals/store';
 import { useAccountStore } from '../providers';
 import { PaginateAccount } from '../types';
 import AccountListItem from './Item';
@@ -98,11 +98,9 @@ const ListAccounts = () => {
           containerProps={{
             className: 'min-w-0',
           }}
+          icon={<MagnifyingGlassIcon className="h-5 w-5" />}
           placeholder="Search..."
         />
-        <IconButton size="sm" className="!absolute right-1 top-1 rounded">
-          <MagnifyingGlassIcon color="white" className="w-4 h-4" />
-        </IconButton>
       </div>
       <DataTable headings={headings} sticky>
         {accounts!.map((item) => (
@@ -118,10 +116,12 @@ const ListAccounts = () => {
           />
         ))}
       </DataTable>
-      <Pagination
-        {...propsPagination}
-        onChangePage={(p) => router.push({ pathname: router.pathname, query: { ...router.query, page: p } })}
-      />
+      <div className="mt-4">
+        <Pagination
+          {...propsPagination}
+          onChangePage={(p) => router.push({ pathname: router.pathname, query: { ...router.query, page: p } })}
+        />
+      </div>
       <ModalDeleteAccount />
     </>
   );

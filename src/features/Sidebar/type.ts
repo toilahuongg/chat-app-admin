@@ -3,5 +3,6 @@ export interface NavItem {
   title: string;
   link?: string;
   children?: NavItem[];
+  disableLink?: boolean;
   scopes: string[];
 }

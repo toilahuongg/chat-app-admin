@@ -8,7 +8,7 @@ import useSWRMutation from 'swr/mutation';
 const createAccount = (url: string, { arg }: { arg: Account }) =>
   instance.post<TSuccessResponse<{ accountId: string }>>(`${url}`, arg);
 
-const useCreateAccount = () => {
+export const useCreateAccount = () => {
   const { mutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation('/accounts/create', createAccount, { revalidate: false });
 
@@ -30,5 +30,3 @@ const useCreateAccount = () => {
     [trigger, isMutating, mutate],
   );
 };
-
-export default useCreateAccount;

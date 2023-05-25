@@ -19,7 +19,8 @@ export function AccountProvider({ children }: { children: React.ReactNode }) {
   );
   if (isLoading) return <div> Loading ...</div>;
   if (error && (pathname?.startsWith(PATH_ADMIN) || pathname === PATH_HOMEPAGE)) router.push(PATH_SIGNIN);
-  if (data && !data.scopes.includes(SCOPES.ACCESS_ADMINISTRATION) && pathname !== PATH_SIGNIN) router.push(PATH_SIGNIN);
+  if (data && !data.scopes.includes(SCOPES.ACCESS_ADMINISTRATION) && pathname !== PATH_SIGNIN)
+    return <div> Access denied</div>;
   if (data && !pathname?.startsWith(PATH_ADMIN)) router.push(PATH_ADMIN);
   return <AccountContext.Provider value={createAccountStore(data!)}>{children}</AccountContext.Provider>;
 }

@@ -10,13 +10,18 @@ export default class RoleService {
     return newRole;
   }
 
+  static async findById(id: Types.ObjectId) {
+    const newRole = await RoleModel.findById(id).lean();
+    return newRole;
+  }
+
   static async createRole(body: z.infer<typeof createRoleValidator.shape.body>) {
     const newRole = await RoleModel.create({ ...body });
     return newRole;
   }
 
   static async updateRole(id: Types.ObjectId, body: z.infer<typeof updateRoleValidator.shape.body>) {
-    const roleUpdated = await RoleModel.findById(id, { ...body }, { new: true }).lean();
+    const roleUpdated = await RoleModel.findOneAndUpdate({ _id: id }, { ...body }, { new: true }).lean();
     if (!roleUpdated) throw new NotFoundError('Role not found');
     return roleUpdated;
   }

@@ -11,7 +11,7 @@ type Arg = {
 const deleteAccount = (url: string, { arg }: { arg: Arg }) =>
   instance.delete<TSuccessResponse<{ accountId: string }>>(`${url}/${arg.id}`);
 
-export const useDeleteAccount = () => {
+const useDeleteAccount = () => {
   const { mutate } = useSWRConfig();
   const { trigger, isMutating } = useSWRMutation('/accounts', deleteAccount, { revalidate: false });
 
@@ -34,3 +34,5 @@ export const useDeleteAccount = () => {
     [trigger, isMutating, mutate],
   );
 };
+
+export default useDeleteAccount;

@@ -1,9 +1,9 @@
-import Card from '@src/components/Card';
 import VariantsForm from './Variants';
 import ProductTitleDescription from './TitleDescription';
 import ProductMedia from './Media';
 import ProductPrice from './Price';
 import ProductStatus from './Status';
+import ProductOrganization from './Organization';
 
 const EditProductForm = () => {
   return (
@@ -16,6 +16,7 @@ const EditProductForm = () => {
       </div>
       <div className="w-80 flex flex-col gap-4">
         <ProductStatus />
+        <ProductOrganization />
       </div>
     </div>
   );

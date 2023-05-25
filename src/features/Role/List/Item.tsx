@@ -2,23 +2,21 @@ import { PencilSquareIcon, DocumentDuplicateIcon, TrashIcon } from '@heroicons/r
 import { useRouter } from 'next/router';
 import { IconButton } from '@material-tailwind/react';
 import DataTable from '@src/components/DataTable';
-import { Account } from '../types';
+import { Role } from '../types';
 
-type AccountListItem = {
-  account: Account;
+type RoleListItem = {
+  role: Role;
   isAccessWrite: boolean;
-  roles: string[];
   onDelete: () => void;
 };
-const AccountListItem: React.FC<AccountListItem> = ({ account, isAccessWrite, roles, onDelete }) => {
-  const { _id, username, email } = account;
+const RoleListItem: React.FC<RoleListItem> = ({ role, isAccessWrite, onDelete }) => {
+  const { _id, name, desc } = role;
   const router = useRouter();
   return (
     <DataTable.Row className="group">
       <DataTable.Cell className="w-4"> {_id}</DataTable.Cell>
-      <DataTable.Cell> {username}</DataTable.Cell>
-      <DataTable.Cell> {email}</DataTable.Cell>
-      <DataTable.Cell> {roles.join(', ')}</DataTable.Cell>
+      <DataTable.Cell> {name}</DataTable.Cell>
+      <DataTable.Cell> {desc}</DataTable.Cell>
       {isAccessWrite && (
         <DataTable.Cell className="flex justify-end gap-1 opacity-0 group-hover:opacity-100">
           <IconButton
@@ -26,7 +24,7 @@ const AccountListItem: React.FC<AccountListItem> = ({ account, isAccessWrite, ro
             variant="outlined"
             color="green"
             className="flex items-center gap-2"
-            onClick={() => router.push('/admin/accounts/' + _id)}
+            onClick={() => router.push('/admin/roles/' + _id)}
           >
             <PencilSquareIcon strokeWidth={2} className="h-5 w-5" />
           </IconButton>
@@ -42,4 +40,4 @@ const AccountListItem: React.FC<AccountListItem> = ({ account, isAccessWrite, ro
   );
 };
 
-export default AccountListItem;
+export default RoleListItem;

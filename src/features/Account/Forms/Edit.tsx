@@ -1,7 +1,7 @@
 import { Checkbox, Input } from '@material-tailwind/react';
 import { TSuccessResponse } from '@server/schema/response.schema';
 import { SCOPES } from '@server/utils/scopes';
-import { Role } from '@src/features/Role/store';
+import { Role } from '@src/features/Role/types';
 import instance from '@src/utils/instance';
 import useSWR from 'swr';
 import { useStore } from 'zustand';

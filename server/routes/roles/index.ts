@@ -11,6 +11,7 @@ const router = express.Router();
 router.use(authentication);
 
 router.get('/roles', accessScopes([SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]), detectException(RoleController.findAll));
+router.get('/roles/:role_id', accessScopes([SCOPES.READ_ROLES]), detectException(RoleController.findById));
 
 router.post(
   '/roles',
