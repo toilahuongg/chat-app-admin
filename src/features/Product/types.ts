@@ -27,9 +27,11 @@ export interface Product {
   description: string;
   slug: string;
   price: number;
+  media: string[];
   compareAtPrice: number;
   tags: string[];
   status: ProductStatus;
   options: ProductOption[];
+  categoryId: string;
   variants: ProductVariant[];
 }

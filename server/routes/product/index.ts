@@ -1,34 +1,37 @@
-import express from 'express';
+import ProductController from '@server/controllers/product.controller';
+import { detectException } from '@server/middlewares';
 import { authentication } from '@server/middlewares/auth.middleware';
 import { accessScopes } from '@server/middlewares/role.middleware';
 import { SCOPES } from '@server/utils/scopes';
-import validate from '@server/validators';
-import { createRoleValidator, deleteRoleValidator, updateRoleValidator } from '@server/validators/role.validator';
-import RoleController from '@server/controllers/role.controller';
-import { detectException } from '@server/middlewares';
+import express from 'express';
 
 const router = express.Router();
 router.use(authentication);
 
-router.get('/roles', accessScopes([SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]), detectException(RoleController.findAll));
-router.get('/roles/:role_id', accessScopes([SCOPES.READ_ROLES]), detectException(RoleController.findById));
+router.get(
+  '/products',
+  accessScopes([SCOPES.READ_PRODUCT_CATEGORIES, SCOPES.WRITE_PRODUCT_CATEGORIES]),
+  detectException(ProductController.findAll),
+);
+router.get(
+  '/products/:id',
+  accessScopes([SCOPES.READ_PRODUCT_CATEGORIES]),
+  detectException(ProductController.findById),
+);
 
 router.post(
-  '/roles',
-  accessScopes([SCOPES.WRITE_ROLES]),
-  validate(createRoleValidator),
-  detectException(RoleController.createRole),
+  '/products',
+  accessScopes([SCOPES.WRITE_PRODUCT_CATEGORIES]),
+  detectException(ProductController.createProduct),
 );
 router.put(
-  '/roles/:role_id',
-  accessScopes([SCOPES.WRITE_ROLES]),
-  validate(updateRoleValidator),
-  detectException(RoleController.updateRole),
+  '/products/:id',
+  accessScopes([SCOPES.WRITE_PRODUCT_CATEGORIES]),
+  detectException(ProductController.updateProduct),
 );
 router.delete(
-  '/roles/:role_id',
-  accessScopes([SCOPES.WRITE_ROLES]),
-  validate(deleteRoleValidator),
-  detectException(RoleController.deleteRole),
+  '/products/:id',
+  accessScopes([SCOPES.WRITE_PRODUCT_CATEGORIES]),
+  detectException(ProductController.deleteProduct),
 );
 export default router;

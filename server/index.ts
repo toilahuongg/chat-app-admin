@@ -33,6 +33,8 @@ app.prepare().then(() => {
   import('@server/dbs/init.mongodb');
   // routes
 
+  server.use(express.static(path.join(__dirname, 'public')));
+
   server.use('/api/v1', rootRouter);
 
   server.all('*', (req, res) => {

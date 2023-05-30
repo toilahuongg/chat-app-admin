@@ -17,7 +17,7 @@ const CreateProductCategoryPage = () => {
   };
   return (
     <Page
-      title="Create product category"
+      title="Tạo danh mục sản phẩm mới"
       backUrl="/admin/products/categories"
       headerActions={
         <Button isLoading={isMutating} onClick={handleCreate}>

@@ -2,25 +2,25 @@ import { Card, CardBody } from '@material-tailwind/react';
 import { SCOPES } from '@server/utils/scopes';
 import Button from '@src/components/Button';
 import Page from '@src/components/Page';
-import ListAccounts from '@src/features/Account/components/List';
 import { withScopes } from '@src/features/Auth/withScopes';
+import ListProducts from '@src/features/Product/components/List';
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-const AccountPage = () => {
+const RolePage = () => {
   return (
     <Page
-      title="Danh sách tài khoản"
+      title="Sản phẩm"
       headerActions={
-        <Link href="/admin/accounts/create">
-          <Button>Tài khoản mới</Button>
+        <Link href="/admin/products/create">
+          <Button>Thêm mới</Button>
         </Link>
       }
     >
       <Card>
         <CardBody>
           <Suspense fallback="Loading ...">
-            <ListAccounts />
+            <ListProducts />
           </Suspense>
         </CardBody>
       </Card>
@@ -28,4 +28,4 @@ const AccountPage = () => {
   );
 };
 
-export default withScopes(AccountPage, [SCOPES.READ_ACCOUNTS, SCOPES.WRITE_ACCOUNTS]);
+export default withScopes(RolePage, [SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]);

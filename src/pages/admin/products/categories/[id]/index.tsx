@@ -31,7 +31,7 @@ const EditProductCategoryPage = ({ params }: InferGetServerSidePropsType<typeof 
 
   const { editProductCategory, isMutating } = useEditProductCategory();
 
-  const handleCreate = () => {
+  const handleEdit = () => {
     toastResponse(editProductCategory(params?.id as string, category));
   };
 
@@ -46,7 +46,7 @@ const EditProductCategoryPage = ({ params }: InferGetServerSidePropsType<typeof 
       title="Edit role"
       backUrl="/admin/products/categories"
       headerActions={
-        <Button isLoading={isMutating} onClick={handleCreate}>
+        <Button isLoading={isMutating} onClick={handleEdit}>
           Save
         </Button>
       }

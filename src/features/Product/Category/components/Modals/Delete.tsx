@@ -2,7 +2,7 @@ import { Dialog, DialogBody, DialogFooter, DialogHeader } from '@material-tailwi
 import Button from '@src/components/Button';
 import { toastResponse } from '@src/utils/toast';
 import { useDeleteRoleStore } from './store';
-import useDeleteRole from '@src/hooks/roles/useDeleteRole';
+import useDeleteRole from '@src/hooks/roles/useDelete';
 
 const ModalDeleteRole = () => {
   const { isShow, role, toggleShow } = useDeleteRoleStore((state) => state);

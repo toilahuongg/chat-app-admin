@@ -10,10 +10,10 @@ import { Suspense } from 'react';
 const RolePage = () => {
   return (
     <Page
-      title="Role list"
+      title="Danh sách quyền"
       headerActions={
         <Link href="/admin/roles/create">
-          <Button>New role</Button>
+          <Button>Thêm quyền mới</Button>
         </Link>
       }
     >

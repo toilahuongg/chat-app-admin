@@ -17,11 +17,11 @@ const CreateRolePage = () => {
   };
   return (
     <Page
-      title="Create role"
+      title="Tạo quyền mới"
       backUrl="/admin/roles"
       headerActions={
         <Button isLoading={isMutating} onClick={handleCreate}>
-          Create
+          Tạo
         </Button>
       }
     >

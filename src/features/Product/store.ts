@@ -1,9 +1,9 @@
+import { DragEndEvent } from '@dnd-kit/core';
+import { arrayMove } from '@dnd-kit/sortable';
 import { produce } from 'immer';
 import { createStore, useStore } from 'zustand';
 import { initialOption, initialOptionItem, initialProduct } from './constants';
 import { Product, ProductStatus } from './types';
-import { DragEndEvent } from '@dnd-kit/core';
-import { arrayMove } from '@dnd-kit/sortable';
 
 export type StateProduct = {
   product: Product;
@@ -14,6 +14,9 @@ export type StateProduct = {
   setPrice: (value: number) => void;
   setCompareAtPrice: (value: number) => void;
   setStatus: (value: ProductStatus) => void;
+  setCategoryId: (id: string) => void;
+  addImageToMedia: (image: string) => void;
+  removeImageFromMedia: (index: number) => void;
   options: {
     addOption: () => void;
     addOptionValue: (id: string) => void;
@@ -73,6 +76,24 @@ export const createProductStore = (product: Product) => {
       set((state) =>
         produce(state, (draft) => {
           draft.product.status = value;
+        }),
+      ),
+    setCategoryId: (id) =>
+      set((state) =>
+        produce(state, (draft) => {
+          draft.product.categoryId = id;
+        }),
+      ),
+    addImageToMedia: (image) =>
+      set((state) =>
+        produce(state, (draft) => {
+          if (image) draft.product.media.push(image);
+        }),
+      ),
+    removeImageFromMedia: (idx) =>
+      set((state) =>
+        produce(state, (draft) => {
+          draft.product.media.splice(idx, 1);
         }),
       ),
     options: {

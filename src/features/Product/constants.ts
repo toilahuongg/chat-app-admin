@@ -12,6 +12,8 @@ export const initialProduct: Product = {
   options: [],
   tags: [],
   variants: [],
+  categoryId: '',
+  media: [],
 };
 
 export const initialOption = (): ProductOption => ({

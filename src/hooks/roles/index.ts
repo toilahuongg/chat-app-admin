@@ -1,3 +1,3 @@
-export * from './useDeleteRole';
-export * from './useCreateRole';
-export * from './useEditRole';
+export * from './useDelete';
+export * from './useCreate';
+export * from './useEdit';

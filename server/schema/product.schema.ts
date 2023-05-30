@@ -39,11 +39,11 @@ export const productSchema = z.object({
   compareAtPrice: z.number(),
   tags: z.array(z.string()),
   status: z.enum(['active', 'draft', 'archived']),
-  collections: z.array(z.instanceof(Types.ObjectId)),
-  media: z.array(productMediaSchema),
+  categoryId: z.instanceof(Types.ObjectId),
+  media: z.array(z.string()),
   options: z.array(productOptionSchema),
   variants: z.array(productVariantSchema),
-  account: z.instanceof(Types.ObjectId),
+  accountId: z.instanceof(Types.ObjectId),
 });
 
 export type TProduct = z.infer<typeof productSchema>;

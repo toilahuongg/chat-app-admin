@@ -10,10 +10,10 @@ import { Suspense } from 'react';
 const ProductCategoryPage = () => {
   return (
     <Page
-      title="Product category list"
+      title="Danh mục sản phẩm"
       headerActions={
         <Link href="/admin/products/categories/create">
-          <Button>New category</Button>
+          <Button>Tạo mới</Button>
         </Link>
       }
     >

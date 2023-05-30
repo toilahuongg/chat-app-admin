@@ -10,63 +10,28 @@ export const NAV_MENU: NavItem[] = [
   },
   {
     id: 'products',
-    title: 'Products',
+    title: 'Sản phẩm',
+    link: '/admin/products',
     children: [
       {
-        id: 'product-list',
-        title: 'Product list',
-        link: '/admin/products',
-        scopes: [SCOPES.READ_PRODUCTS, SCOPES.WRITE_PRODUCTS],
-      },
-      {
         id: 'category-list',
-        title: 'Category list',
+        title: 'Danh mục sản phẩm',
         link: '/admin/products/categories',
         scopes: [SCOPES.WRITE_PRODUCTS],
       },
     ],
-    scopes: [SCOPES.READ_PRODUCTS],
+    scopes: [SCOPES.READ_PRODUCTS, SCOPES.WRITE_PRODUCTS],
   },
   {
     id: 'roles',
-    title: 'Roles',
+    title: 'Phân quyền',
     link: '/admin/roles',
-    disableLink: true,
-    children: [
-      {
-        id: 'role-list',
-        title: 'Role list',
-        link: '/admin/roles',
-        scopes: [SCOPES.READ_ROLES, SCOPES.WRITE_ROLES],
-      },
-      {
-        id: 'create',
-        title: 'Create',
-        link: '/admin/roles/create',
-        scopes: [SCOPES.WRITE_ROLES],
-      },
-    ],
-    scopes: [SCOPES.READ_ROLES],
+    scopes: [SCOPES.READ_ROLES, SCOPES.WRITE_ROLES],
   },
   {
     id: 'accounts',
-    title: 'Accounts',
+    title: 'Tài khoản',
     link: '/admin/accounts',
-    disableLink: true,
-    children: [
-      {
-        id: 'account-list',
-        title: 'Account list',
-        link: '/admin/accounts',
-        scopes: [SCOPES.READ_ACCOUNTS, SCOPES.WRITE_ACCOUNTS],
-      },
-      {
-        id: 'create',
-        title: 'Create',
-        link: '/admin/accounts/create',
-        scopes: [SCOPES.WRITE_ACCOUNTS],
-      },
-    ],
-    scopes: [SCOPES.READ_ACCOUNTS],
+    scopes: [SCOPES.READ_ACCOUNTS, SCOPES.WRITE_ACCOUNTS],
   },
 ];

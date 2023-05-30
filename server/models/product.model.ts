@@ -7,16 +7,19 @@ const DOCUMENT_NAME = 'Product';
 const COLLECTION_NAME = 'Products';
 
 const OptionItemSchema = new Schema<TProductOptionItem>({
+  id: { type: String },
   label: { type: String },
   value: { type: String },
 });
 
 const OptionSchema = new Schema<TProductOption>({
+  id: { type: String },
   name: { type: String },
   values: [OptionItemSchema],
 });
 
 const VariantSchema = new Schema<TProductVariant>({
+  id: { type: String },
   title: { type: String },
   price: { type: Number },
   compareAtPrice: { type: Number },
@@ -35,12 +38,13 @@ const ProductSchema = new Schema<TProduct>(
     status: { type: String },
     options: [OptionSchema],
     variants: [VariantSchema],
-    account: {
+    media: { type: [String], default: [] },
+    accountId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: AccountModel.modelName,
     },
-    collections: { type: [Schema.Types.ObjectId], ref: CollectionModel.modelName },
+    categoryId: { type: Schema.Types.ObjectId, ref: CollectionModel.modelName },
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );

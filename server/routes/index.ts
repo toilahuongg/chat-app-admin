@@ -2,13 +2,22 @@ import express from 'express';
 import accountsRouter from './accounts';
 import rolesRouter from './roles';
 import productCategoriesRouter from './product/category';
+import productsRouter from './product';
 import { TErrorResponse } from '@server/schema/response.schema';
 import ErrorResponse from '@server/core/error.response';
+import { upload } from '@server/helpers/multer';
+import { OK } from '@server/core/success.response';
+
 const router = express.Router();
+router.post('/upload', upload.single('image'), (req, res) => {
+  const imageUrl = req.protocol + '://' + req.get('host') + '/uploads/' + req.file!.filename;
+  res.json(new OK({ metadata: { url: imageUrl }, message: 'Upload successfully' }));
+});
 
 router.use(accountsRouter);
 router.use(rolesRouter);
 router.use(productCategoriesRouter);
+router.use(productsRouter);
 
 router.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   const error = new ErrorResponse({ message: 'Not found', statusCode: 404 });

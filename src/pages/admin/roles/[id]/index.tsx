@@ -41,7 +41,7 @@ const EditRolePage = ({ params }: InferGetServerSidePropsType<typeof getServerSi
 
   return (
     <Page
-      title="Edit role"
+      title="Chỉnh sửa quyền"
       backUrl="/admin/roles"
       headerActions={
         <Button isLoading={isMutating} onClick={handleCreate}>

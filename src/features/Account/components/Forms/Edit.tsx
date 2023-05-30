@@ -31,7 +31,7 @@ const EditAccountForm = () => {
   return (
     <div className="flex flex-col gap-4">
       <Card>
-        <Card.Section title="Account">
+        <Card.Section title="Tài khoản">
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Username"
@@ -77,7 +77,7 @@ const EditAccountForm = () => {
         </Card.Section>
       </Card>
       <Card>
-        <Card.Section title="Information">
+        <Card.Section title="Thông tin">
           <div className="grid grid-cols-2 gap-4">
             <Input
               label="Firstname"
@@ -117,7 +117,7 @@ const EditAccountForm = () => {
 
       {scopes.includes(SCOPES.MANAGER_ROLE_ACCOUNTS) && (
         <Card>
-          <Card.Section title="Roles">
+          <Card.Section title="Quyền">
             <div className="grid grid-cols-2 gap-3">
               {isLoading
                 ? 'Loading...'
