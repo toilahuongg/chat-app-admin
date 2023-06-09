@@ -28,37 +28,45 @@ const router = express.Router();
 
 router.post('/accounts/login', detectDevice, validate(loginValidator), detectException(AccountController.login));
 
-router.use(authentication);
 if (!appConfig.app.isProd) {
-  router.get('/accounts/check-auth', (req, res) => {
+  router.get('/accounts/check-auth', authentication, (req, res) => {
     return res.json({ id: req.accountId });
   });
 }
 
-router.post('/accounts/refresh-token', detectException(AccountController.refreshToken));
-router.get('/accounts/me', detectException(AccountController.getInformation));
+router.post('/accounts/refresh-token', authentication, detectException(AccountController.refreshToken));
+router.get('/accounts/me', authentication, detectException(AccountController.getInformation));
 router.get(
   '/accounts/:id',
+  authentication,
   accessScopes([SCOPES.READ_ACCOUNTS, SCOPES.WRITE_ACCOUNTS]),
   validate(findByIdValidator),
   detectException(AccountController.findById),
 );
-router.get('/accounts', validate(findAllUsersValidator), detectException(AccountController.findAllUsers));
+router.get(
+  '/accounts',
+  authentication,
+  validate(findAllUsersValidator),
+  detectException(AccountController.findAllUsers),
+);
 
 router.patch(
   '/accounts/change-password',
+  authentication,
   validate(changePasswordValidator),
   detectException(AccountController.changePassword),
 );
 
 router.patch(
   '/accounts/change-information',
+  authentication,
   validate(changeInformationValidator),
   detectException(AccountController.changeInformation),
 );
 
 router.post(
   '/accounts/create',
+  authentication,
   accessScopes([SCOPES.WRITE_ACCOUNTS]),
   validate(createAccountValidator),
   detectException(AccountController.create),
@@ -66,12 +74,18 @@ router.post(
 
 router.put(
   '/accounts/:id',
+  authentication,
   accessScopes([SCOPES.WRITE_ACCOUNTS]),
   validate(editAccountValidator),
   detectException(AccountController.edit),
 );
 
-router.delete('/accounts/:id', accessScopes([SCOPES.WRITE_ACCOUNTS]), detectException(AccountController.deleteAccount));
+router.delete(
+  '/accounts/:id',
+  authentication,
+  accessScopes([SCOPES.WRITE_ACCOUNTS]),
+  detectException(AccountController.delete),
+);
 
-router.post('/accounts/logout', detectException(AccountController.logout));
+router.post('/accounts/logout', authentication, detectException(AccountController.logout));
 export default router;

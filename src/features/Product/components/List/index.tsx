@@ -25,8 +25,8 @@ const ListProducts = () => {
   const headings = useMemo(() => {
     const result = [
       {
-        id: 'ID',
-        title: 'ID',
+        id: 'thumbnail',
+        title: 'Thumbail',
       },
       {
         id: 'title',

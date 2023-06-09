@@ -27,16 +27,16 @@ const CardHeader: React.FC<CardHeader> = ({ className, title, action }) => {
 type CardSection = {
   children: React.ReactNode;
   title?: string;
-  action?: React.ReactNode;
+  actions?: React.ReactNode;
   className?: string;
 };
-const CardSection: React.FC<CardSection> = ({ children, className, title, action }) => {
+const CardSection: React.FC<CardSection> = ({ children, className, title, actions }) => {
   return (
     <div className={'p-4 ' + (className || '')}>
-      {(title || action) && (
+      {(title || actions) && (
         <div className="flex items-center gap-4 pb-4">
           {title && <h5 className="flex-1 font-medium">{title}</h5>}
-          {action && <div>{action}</div>}
+          {actions && <div>{actions}</div>}
         </div>
       )}
       {children}

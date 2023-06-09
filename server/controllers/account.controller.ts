@@ -82,7 +82,7 @@ class AccountController {
     }).send(res);
   }
 
-  static async deleteAccount(req: Request, res: Response) {
+  static async delete(req: Request, res: Response) {
     new OK({
       message: 'Delete account success!',
       metadata: await AccountService.deleteById(new Types.ObjectId(req.params.id)),
@@ -92,6 +92,7 @@ class AccountController {
   static async findAllUsers(req: Request, res: Response) {
     new OK({
       message: 'Get accounts success!',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       metadata: await AccountService.findAllUsers(req.query as any),
     }).send(res);
   }

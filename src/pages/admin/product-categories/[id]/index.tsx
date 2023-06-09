@@ -24,7 +24,7 @@ export const getServerSideProps: GetServerSideProps<{ params: ParsedUrlQuery | u
 };
 
 const EditProductCategoryPage = ({ params }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const { data, isLoading } = useSWR(`/products/categories/${params?.id}`, (url) =>
+  const { data, isLoading } = useSWR(`/product-categories/${params?.id}`, (url) =>
     instance.get<TSuccessResponse<ProductCategory>>(url).then(({ data }) => data.metadata),
   );
   const { category, setProductCategory } = useStore(productCategoryStore, (state) => state);
@@ -43,8 +43,8 @@ const EditProductCategoryPage = ({ params }: InferGetServerSidePropsType<typeof 
 
   return (
     <Page
-      title="Edit role"
-      backUrl="/admin/products/categories"
+      title="Chỉnh sửa chuyên mục"
+      backUrl="/admin/product-categories"
       headerActions={
         <Button isLoading={isMutating} onClick={handleEdit}>
           Save

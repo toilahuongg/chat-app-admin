@@ -18,24 +18,18 @@ export default class ProductCategoryService {
     return newProductCategory;
   }
 
-  static async createProductCategory(
-    body: z.infer<typeof createProductCategoryValidator.shape.body>,
-    accountId: Types.ObjectId,
-  ) {
+  static async create(body: z.infer<typeof createProductCategoryValidator.shape.body>, accountId: Types.ObjectId) {
     const newProductCategory = await ProductCategoryModel.create({ ...body, account: accountId });
     return newProductCategory;
   }
 
-  static async updateProductCategory(
-    id: Types.ObjectId,
-    body: z.infer<typeof updateProductCategoryValidator.shape.body>,
-  ) {
+  static async update(id: Types.ObjectId, body: z.infer<typeof updateProductCategoryValidator.shape.body>) {
     const categoryUpdated = await ProductCategoryModel.findOneAndUpdate({ _id: id }, { ...body }, { new: true }).lean();
     if (!categoryUpdated) throw new NotFoundError('Category not found');
     return categoryUpdated;
   }
 
-  static async deleteProductCategory(id: Types.ObjectId) {
+  static async delete(id: Types.ObjectId) {
     const categoryUpdated = await ProductCategoryModel.findByIdAndRemove(id);
     if (!categoryUpdated) throw new NotFoundError('Category not found');
     return { categoryId: categoryUpdated._id };

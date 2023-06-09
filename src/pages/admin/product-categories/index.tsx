@@ -12,7 +12,7 @@ const ProductCategoryPage = () => {
     <Page
       title="Danh mục sản phẩm"
       headerActions={
-        <Link href="/admin/products/categories/create">
+        <Link href="/admin/product-categories/create">
           <Button>Tạo mới</Button>
         </Link>
       }

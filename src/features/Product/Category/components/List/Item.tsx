@@ -24,7 +24,7 @@ const ProductCategoryItem: React.FC<ProductCategoryItem> = ({ category, isAccess
             variant="outlined"
             color="green"
             className="flex items-center gap-2"
-            onClick={() => router.push('/admin/products/categories/' + _id)}
+            onClick={() => router.push('/admin/product-categories/' + _id)}
           >
             <PencilSquareIcon strokeWidth={2} className="h-5 w-5" />
           </IconButton>

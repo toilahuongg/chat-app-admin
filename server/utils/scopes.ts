@@ -8,6 +8,8 @@ export const SCOPES = {
   WRITE_ROLES: 'write_roles',
   WRITE_PRODUCTS: 'write_products',
   READ_PRODUCTS: 'read_products',
+  WRITE_ORDERS: 'write_orders',
+  READ_ORDERS: 'read_orders',
   WRITE_PRODUCT_CATEGORIES: 'write_product_categories',
   READ_PRODUCT_CATEGORIES: 'read_product_categories',
 };

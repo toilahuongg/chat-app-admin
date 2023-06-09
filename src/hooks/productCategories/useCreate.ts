@@ -10,13 +10,13 @@ const createCategory = (url: string, { arg }: { arg: ProductCategory }) =>
 
 export const useCreateProductCategory = () => {
   const { mutate } = useSWRConfig();
-  const { trigger, isMutating } = useSWRMutation('/products/categories', createCategory, { revalidate: false });
+  const { trigger, isMutating } = useSWRMutation('/product-categories', createCategory, { revalidate: false });
 
   return useMemo(
     () => ({
       createCategory: async (category: ProductCategory) => {
         const response = await trigger(category);
-        mutate('/products/categories', () => response?.data.metadata, {
+        mutate('/product-categories', () => response?.data.metadata, {
           populateCache: (category: ProductCategory, categories: ProductCategory[]) => {
             // filter the list, and return it with the updated item
             return [...(categories || []), category];

@@ -5,9 +5,9 @@ import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 
 export default class ProductCategoryController {
-  static async createProductCategory(req: Request, res: Response) {
+  static async create(req: Request, res: Response) {
     new CREATED({
-      metadata: await ProductCategoryService.createProductCategory(req.body, req.accountId!),
+      metadata: await ProductCategoryService.create(req.body, req.accountId!),
     }).send(res);
   }
 
@@ -23,15 +23,15 @@ export default class ProductCategoryController {
     }).send(res);
   }
 
-  static async updateProductCategory(req: Request, res: Response) {
+  static async update(req: Request, res: Response) {
     new OK({
-      metadata: await ProductCategoryService.updateProductCategory(new Types.ObjectId(req.params.id), req.body),
+      metadata: await ProductCategoryService.update(new Types.ObjectId(req.params.id), req.body),
     }).send(res);
   }
 
-  static async deleteProductCategory(req: Request, res: Response) {
+  static async delete(req: Request, res: Response) {
     new OK({
-      metadata: await ProductCategoryService.deleteProductCategory(new Types.ObjectId(req.params.id)),
+      metadata: await ProductCategoryService.delete(new Types.ObjectId(req.params.id)),
     }).send(res);
   }
 }

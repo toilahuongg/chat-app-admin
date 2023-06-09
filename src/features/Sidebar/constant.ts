@@ -16,10 +16,16 @@ export const NAV_MENU: NavItem[] = [
       {
         id: 'category-list',
         title: 'Danh mục sản phẩm',
-        link: '/admin/products/categories',
+        link: '/admin/product-categories',
         scopes: [SCOPES.WRITE_PRODUCTS],
       },
     ],
+    scopes: [SCOPES.READ_PRODUCTS, SCOPES.WRITE_PRODUCTS],
+  },
+  {
+    id: 'orders',
+    title: 'Đơn hàng',
+    link: '/admin/orders',
     scopes: [SCOPES.READ_PRODUCTS, SCOPES.WRITE_PRODUCTS],
   },
   {

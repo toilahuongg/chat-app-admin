@@ -10,7 +10,7 @@ import ProductCategoryItem from './Item';
 
 const ListProductCategories = () => {
   const { data: categories } = useSWR(
-    '/products/categories',
+    '/product-categories',
     (url) => instance.get<TSuccessResponse<ProductCategory[]>>(url).then(({ data }) => data.metadata),
     {
       suspense: true,

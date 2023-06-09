@@ -5,9 +5,9 @@ import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 
 export default class RoleController {
-  static async createRole(req: Request, res: Response) {
+  static async create(req: Request, res: Response) {
     new CREATED({
-      metadata: await RoleService.createRole(req.body),
+      metadata: await RoleService.create(req.body),
     }).send(res);
   }
 
@@ -23,15 +23,15 @@ export default class RoleController {
     }).send(res);
   }
 
-  static async updateRole(req: Request, res: Response) {
+  static async update(req: Request, res: Response) {
     new OK({
-      metadata: await RoleService.updateRole(new Types.ObjectId(req.params.role_id), req.body),
+      metadata: await RoleService.update(new Types.ObjectId(req.params.role_id), req.body),
     }).send(res);
   }
 
-  static async deleteRole(req: Request, res: Response) {
+  static async delete(req: Request, res: Response) {
     new OK({
-      metadata: await RoleService.deleteRole(new Types.ObjectId(req.params.role_id)),
+      metadata: await RoleService.delete(new Types.ObjectId(req.params.role_id)),
     }).send(res);
   }
 }

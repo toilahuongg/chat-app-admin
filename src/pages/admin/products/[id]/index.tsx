@@ -2,6 +2,7 @@ import { TSuccessResponse } from '@server/schema/response.schema';
 import Button from '@src/components/Button';
 import Page from '@src/components/Page';
 import EditProductForm from '@src/features/Product/components/Forms/Edit';
+import { initialProduct } from '@src/features/Product/constants';
 import { productStore } from '@src/features/Product/store';
 import { Product } from '@src/features/Product/types';
 import { useEditProduct } from '@src/hooks';
@@ -35,6 +36,7 @@ const EditProductPage = ({ params }: InferGetServerSidePropsType<typeof getServe
 
   useEffect(() => {
     if (data) setProduct(data);
+    else setProduct(initialProduct);
   }, [data, setProduct]);
 
   if (isLoading) return <>Loading ...</>;

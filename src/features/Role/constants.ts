@@ -23,6 +23,10 @@ export const LIST_SCOPES = [
     ],
   },
   {
+    name: 'Order',
+    scopes: [SCOPES.READ_ORDERS, SCOPES.WRITE_ORDERS],
+  },
+  {
     name: 'Role',
     scopes: [SCOPES.READ_ROLES, SCOPES.WRITE_ROLES],
   },

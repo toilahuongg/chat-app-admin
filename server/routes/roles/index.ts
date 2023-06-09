@@ -8,27 +8,39 @@ import RoleController from '@server/controllers/role.controller';
 import { detectException } from '@server/middlewares';
 
 const router = express.Router();
-router.use(authentication);
 
-router.get('/roles', accessScopes([SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]), detectException(RoleController.findAll));
-router.get('/roles/:role_id', accessScopes([SCOPES.READ_ROLES]), detectException(RoleController.findById));
+router.get(
+  '/roles',
+  authentication,
+  accessScopes([SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]),
+  detectException(RoleController.findAll),
+);
+router.get(
+  '/roles/:role_id',
+  authentication,
+  accessScopes([SCOPES.READ_ROLES]),
+  detectException(RoleController.findById),
+);
 
 router.post(
   '/roles',
+  authentication,
   accessScopes([SCOPES.WRITE_ROLES]),
   validate(createRoleValidator),
-  detectException(RoleController.createRole),
+  detectException(RoleController.create),
 );
 router.put(
   '/roles/:role_id',
+  authentication,
   accessScopes([SCOPES.WRITE_ROLES]),
   validate(updateRoleValidator),
-  detectException(RoleController.updateRole),
+  detectException(RoleController.update),
 );
 router.delete(
   '/roles/:role_id',
+  authentication,
   accessScopes([SCOPES.WRITE_ROLES]),
   validate(deleteRoleValidator),
-  detectException(RoleController.deleteRole),
+  detectException(RoleController.delete),
 );
 export default router;

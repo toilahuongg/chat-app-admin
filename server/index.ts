@@ -3,6 +3,7 @@ import path from 'path';
 import compression from 'compression';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import cors from 'cors';
 
 import rootRouter from '@server/routes';
 import appConfig from '@server/configs/app.config';
@@ -25,6 +26,7 @@ app.prepare().then(() => {
     server.use(compression());
     server.use(express.static(resolve('src')));
   }
+  server.use(cors());
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
 

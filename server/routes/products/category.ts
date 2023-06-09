@@ -12,35 +12,39 @@ import ProductCategoryController from '@server/controllers/productCategory.contr
 import { accessScopes } from '@server/middlewares/role.middleware';
 
 const router = express.Router();
-router.use(authentication);
 
 router.get(
-  '/products/categories',
+  '/product-categories',
+  authentication,
   accessScopes([SCOPES.READ_PRODUCT_CATEGORIES, SCOPES.WRITE_PRODUCT_CATEGORIES]),
   detectException(ProductCategoryController.findAll),
 );
 router.get(
-  '/products/categories/:id',
+  '/product-categories/:id',
+  authentication,
   accessScopes([SCOPES.READ_PRODUCT_CATEGORIES]),
   detectException(ProductCategoryController.findById),
 );
 
 router.post(
-  '/products/categories',
+  '/product-categories',
+  authentication,
   accessScopes([SCOPES.WRITE_PRODUCT_CATEGORIES]),
   validate(createProductCategoryValidator),
-  detectException(ProductCategoryController.createProductCategory),
+  detectException(ProductCategoryController.create),
 );
 router.put(
-  '/products/categories/:id',
+  '/product-categories/:id',
+  authentication,
   accessScopes([SCOPES.WRITE_PRODUCT_CATEGORIES]),
   validate(updateProductCategoryValidator),
-  detectException(ProductCategoryController.updateProductCategory),
+  detectException(ProductCategoryController.update),
 );
 router.delete(
-  '/products/categories/:id',
+  '/product-categories/:id',
+  authentication,
   accessScopes([SCOPES.WRITE_PRODUCT_CATEGORIES]),
   validate(deleteProductCategoryValidator),
-  detectException(ProductCategoryController.deleteProductCategory),
+  detectException(ProductCategoryController.delete),
 );
 export default router;

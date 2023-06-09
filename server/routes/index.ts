@@ -1,12 +1,14 @@
+import ErrorResponse from '@server/core/error.response';
+import { OK } from '@server/core/success.response';
+import { upload } from '@server/helpers/multer';
+import { TErrorResponse } from '@server/schema/response.schema';
 import express from 'express';
 import accountsRouter from './accounts';
+import ordersRouter from './orders';
+import productsRouter from './products';
+import productCategoriesRouter from './products/category';
 import rolesRouter from './roles';
-import productCategoriesRouter from './product/category';
-import productsRouter from './product';
-import { TErrorResponse } from '@server/schema/response.schema';
-import ErrorResponse from '@server/core/error.response';
-import { upload } from '@server/helpers/multer';
-import { OK } from '@server/core/success.response';
+import dashboardRouter from './dashboard';
 
 const router = express.Router();
 router.post('/upload', upload.single('image'), (req, res) => {
@@ -18,6 +20,8 @@ router.use(accountsRouter);
 router.use(rolesRouter);
 router.use(productCategoriesRouter);
 router.use(productsRouter);
+router.use(ordersRouter);
+router.use(dashboardRouter);
 
 router.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
   const error = new ErrorResponse({ message: 'Not found', statusCode: 404 });
