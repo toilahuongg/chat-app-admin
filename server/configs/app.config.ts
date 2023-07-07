@@ -20,7 +20,7 @@ const DEV = {
   db: {
     host: process.env.DEV_DB_HOST || 'localhost',
     port: process.env.DEV_DB_PORT || 27017,
-    name: process.env.DEV_DB_NAME || 'portfolio',
+    name: process.env.DEV_DB_NAME || 'chat-app',
     user: process.env.DEV_DB_USER || 'root',
     pass: process.env.DEV_DB_PASS || '',
   },
@@ -34,7 +34,7 @@ const PROD = {
   db: {
     host: process.env.PROD_DB_HOST || 'localhost',
     port: process.env.PROD_DB_PORT || 27017,
-    name: process.env.PROD_DB_NAME || 'portfolio',
+    name: process.env.PROD_DB_NAME || 'chat-app',
     user: process.env.PROD_DB_USER || 'root',
     pass: process.env.PROD_DB_PASS || '',
   },

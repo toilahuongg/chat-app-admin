@@ -14,19 +14,6 @@ export const LIST_SCOPES = [
     scopes: [SCOPES.ACCESS_ADMINISTRATION],
   },
   {
-    name: 'Product',
-    scopes: [
-      SCOPES.READ_PRODUCTS,
-      SCOPES.WRITE_PRODUCTS,
-      SCOPES.READ_PRODUCT_CATEGORIES,
-      SCOPES.WRITE_PRODUCT_CATEGORIES,
-    ],
-  },
-  {
-    name: 'Order',
-    scopes: [SCOPES.READ_ORDERS, SCOPES.WRITE_ORDERS],
-  },
-  {
     name: 'Role',
     scopes: [SCOPES.READ_ROLES, SCOPES.WRITE_ROLES],
   },

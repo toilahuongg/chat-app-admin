@@ -32,7 +32,7 @@ const ModalAccountPicker: React.FC<TProps> = ({ open, selected, onSelect, toggle
 
   return (
     <Dialog open={open} handler={toggleOpen}>
-      <DialogHeader>Products picker</DialogHeader>
+      <DialogHeader>Accounts picker</DialogHeader>
       <DialogBody divider>
         <List>
           {accounts?.map((account) => {

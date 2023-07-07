@@ -19,7 +19,7 @@ const AccountSchema = new Schema<TAccount>(
     firstName: { type: String },
     lastName: { type: String },
     phoneNumber: { type: String },
-    email: { type: String, required: true },
+    email: { type: String },
     roles: [
       {
         type: Schema.Types.ObjectId,

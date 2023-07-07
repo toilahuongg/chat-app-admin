@@ -4,9 +4,6 @@ import { upload } from '@server/helpers/multer';
 import { TErrorResponse } from '@server/schema/response.schema';
 import express from 'express';
 import accountsRouter from './accounts';
-import ordersRouter from './orders';
-import productsRouter from './products';
-import productCategoriesRouter from './products/category';
 import rolesRouter from './roles';
 import dashboardRouter from './dashboard';
 
@@ -18,9 +15,6 @@ router.post('/upload', upload.single('image'), (req, res) => {
 
 router.use(accountsRouter);
 router.use(rolesRouter);
-router.use(productCategoriesRouter);
-router.use(productsRouter);
-router.use(ordersRouter);
 router.use(dashboardRouter);
 
 router.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
