@@ -242,8 +242,7 @@ describe('change-information', () => {
 
   it('should return message when change information success', async () => {
     const result = await request({
-      firstName: 'Vu Ba',
-      lastName: 'Huong',
+      fullname: 'Vu Ba',
     });
     expect(result.statusCode).toBe(200);
   });

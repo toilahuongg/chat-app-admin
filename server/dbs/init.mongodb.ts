@@ -14,8 +14,8 @@ class Database {
   }
   connect() {
     if (!isProd) {
-      mongoose.set('debug', true);
-      mongoose.set('debug', { color: true });
+      // mongoose.set('debug', true);
+      // mongoose.set('debug', { color: true });
     }
     mongoose
       .connect(connectString, {

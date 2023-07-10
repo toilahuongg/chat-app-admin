@@ -64,14 +64,14 @@ class AccountService {
       refreshTokensUsed: [],
     });
     return {
-      user: getInfoData(newUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']),
+      user: getInfoData(newUser, ['_id', 'username', 'email', 'fullname', 'phoneNumber', 'roles']),
       tokens,
       deviceId: newDevice._id,
     };
   }
 
   static async create(body: z.infer<typeof createAccountValidator.shape.body>, scopes: string[]) {
-    const { username, email, password, address, firstName, lastName, phoneNumber, roles } = body;
+    const { username, email, password, address, fullname, phoneNumber, roles } = body;
     const holderUser = await AccountModel.findOne({
       $or: [
         {
@@ -91,13 +91,12 @@ class AccountService {
       email,
       password: passwordHash,
       address,
-      firstName,
-      lastName,
+      fullname,
       phoneNumber,
       roles: scopes.includes(SCOPES.MANAGER_ROLE_ACCOUNTS) ? roles : [],
     });
     if (!newUser) throw new ErrorResponse({});
-    return getInfoData(newUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']);
+    return getInfoData(newUser, ['_id', 'username', 'email', 'fullname', 'phoneNumber', 'roles']);
   }
   /*
     1. Check username or email
@@ -111,14 +110,7 @@ class AccountService {
   static async login(body: z.infer<typeof loginValidator.shape.body>, device: TDevice) {
     const { account, password } = body;
 
-    const foundUser = await AccountModel.findOne({
-      $or: [
-        {
-          username: account,
-        },
-        { email: account },
-      ],
-    }).lean();
+    const foundUser = await AccountModel.findOne({ username: account }).lean();
     if (!foundUser) throw new AuthFailureError('Incorrect username, email or password!');
 
     const match = await bcrypt.compare(password, foundUser.password);
@@ -150,7 +142,7 @@ class AccountService {
           refreshTokensUsed: [],
         });
     const user = {
-      ...getInfoData(foundUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']),
+      ...getInfoData(foundUser, ['_id', 'username', 'email', 'fullname', 'phoneNumber', 'roles']),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
     return {
@@ -194,7 +186,7 @@ class AccountService {
     body: z.infer<typeof editAccountValidator.shape.body>,
     scopes: string[],
   ) {
-    const { email, username, address, firstName, lastName, password, phoneNumber, roles } = body;
+    const { email, username, address, fullname, password, phoneNumber, roles } = body;
 
     const holderUser = await AccountModel.findOne({
       $or: [
@@ -213,15 +205,14 @@ class AccountService {
       username,
       email,
       address,
-      firstName,
-      lastName,
+      fullname,
       phoneNumber,
       roles: scopes.includes(SCOPES.MANAGER_ROLE_ACCOUNTS) && roles ? roles : [],
     };
     if (password) data['passwordHash'] = await bcrypt.hash(password, 10);
     const newUser = await AccountModel.findByIdAndUpdate({ _id: accountId }, data, { new: true });
     if (!newUser) throw new ErrorResponse({});
-    return getInfoData(newUser, ['_id', 'username', 'email', 'firstName', 'lastName', 'phoneNumber', 'roles']);
+    return getInfoData(newUser, ['_id', 'username', 'email', 'fullname', 'phoneNumber', 'roles']);
   }
 
   static async changePassword(accountId: Types.ObjectId, body: z.infer<typeof changePasswordValidator.shape.body>) {
@@ -243,16 +234,16 @@ class AccountService {
     accountId: Types.ObjectId,
     body: z.infer<typeof changeInformationValidator.shape.body>,
   ) {
-    const { firstName, lastName, phoneNumber, address } = body;
+    const { fullname, phoneNumber, address } = body;
 
     const user = await AccountModel.findByIdAndUpdate(
       accountId,
-      { firstName, lastName, phoneNumber, address },
+      { fullname, phoneNumber, address },
       { new: true },
     ).lean();
     if (!user) throw new NotFoundError('Account not found!');
 
-    return getInfoData(user, ['firstName', 'lastName', 'phoneNumber', 'address']);
+    return getInfoData(user, ['fullname', 'phoneNumber', 'address']);
   }
 
   static async getRolesById(accountId: Types.ObjectId) {
@@ -271,16 +262,7 @@ class AccountService {
     const foundUser = await AccountModel.findById(accountId).lean();
     if (!foundUser) throw new NotFoundError('Account not found!');
     const user = {
-      ...getInfoData(foundUser, [
-        '_id',
-        'username',
-        'email',
-        'firstName',
-        'lastName',
-        'phoneNumber',
-        'phoneNumber',
-        'roles',
-      ]),
+      ...getInfoData(foundUser, ['_id', 'username', 'email', 'fullname', 'phoneNumber', 'phoneNumber', 'roles']),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
 
@@ -298,8 +280,7 @@ class AccountService {
     return await findAllUsers<keyof TAccount>(keyword, page, limit, sortBy, [
       '_id',
       'address',
-      'firstName',
-      'lastName',
+      'fullname',
       'phoneNumber',
       'email',
       'username',

@@ -7,8 +7,7 @@ export type StateAccount = {
   account: Account;
   setAccount: (value: Account) => void;
   setUsername: (value: Account['username']) => void;
-  setFirstName: (value: Account['firstName']) => void;
-  setLastName: (value: Account['lastName']) => void;
+  setFullname: (value: Account['fullname']) => void;
   setEmail: (value: Account['email']) => void;
   setPhoneNumber: (value: Account['phoneNumber']) => void;
   setPassword: (value: Account['password']) => void;
@@ -33,16 +32,10 @@ export const createAccountStore = (account: Account) => {
           draft.account.username = value;
         }),
       ),
-    setFirstName: (value) =>
+    setFullname: (value) =>
       set((state) =>
         produce(state, (draft) => {
-          draft.account.firstName = value;
-        }),
-      ),
-    setLastName: (value) =>
-      set((state) =>
-        produce(state, (draft) => {
-          draft.account.lastName = value;
+          draft.account.fullname = value;
         }),
       ),
     setAddress: (value) =>

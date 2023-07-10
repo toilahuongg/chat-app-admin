@@ -13,7 +13,8 @@ export const findAllUsers = async <T>(
 };
 
 export const queryUsers = async <T>(page: number, limit: number, sort: string | undefined, select: T[]) => {
-  const skip = getSkipItems(page, limit);
+  const p = page <= 1 ? 1 : page;
+  const skip = getSkipItems(p, limit);
   const totalPage = Math.floor((await AccountModel.countDocuments()) / limit);
   return {
     items: await AccountModel.find()
@@ -23,10 +24,10 @@ export const queryUsers = async <T>(page: number, limit: number, sort: string | 
       .select(getSelectData(select))
       .lean()
       .exec(),
-    currentPage: page <= 1 ? 1 : page,
+    currentPage: p,
     totalPage: totalPage,
-    prevPage: page <= 1 ? null : page - 1,
-    nextPage: page >= totalPage ? null : page + 1,
+    prevPage: p <= 1 ? null : page - 1,
+    nextPage: page >= totalPage ? null : p + 1,
   };
 };
 

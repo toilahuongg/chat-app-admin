@@ -1,7 +1,7 @@
 import express from 'express';
 import path from 'path';
-import fs from 'fs';
-import https from 'https';
+// import fs from 'fs';
+import https from 'http';
 import compression from 'compression';
 import helmet from 'helmet';
 import morgan from 'morgan';
@@ -14,6 +14,7 @@ import { Server } from 'socket.io';
 import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import RedisServer from './services/redis.service';
+import { authSocket } from './middlewares/auth.middleware';
 
 const dev = !appConfig.app.isProd;
 function resolve(p: string) {
@@ -22,29 +23,34 @@ function resolve(p: string) {
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const httpsOptions = {
-  key: fs.readFileSync('./certification/cert.key'),
-  cert: fs.readFileSync('./certification/cert.pem'),
-};
+// const httpsOptions = {
+//   key: fs.readFileSync('./certification/localhost-key.pem'),
+//   cert: fs.readFileSync('./certification/localhost.pem'),
+// };
 
 app.prepare().then(async () => {
   const server = express();
-  const httpsServer = https.createServer(httpsOptions, server);
+  const httpsServer = https.createServer(server);
   const io = new Server(httpsServer);
   const pubClient = createClient({ url: 'redis://localhost:6379' });
   const subClient = pubClient.duplicate();
   await Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
     io.adapter(createAdapter(pubClient, subClient));
   });
-
+  io.use(authSocket);
   io.on('connection', (socket) => {
-    console.log('Client id connected ' + socket.id);
+    if (socket.data.newAccessToken) socket.emit('NEW_ACCESS_TOKEN', socket.data.newAccessToken);
+    console.log('Client id connected ' + socket.id + ', accountId: ' + socket.data.accountId);
     socket.on('message', (msg) => {
+      console.log(msg);
       io.send(socket.id + ': ' + msg);
+    });
+    socket.on('disconnect', () => {
+      console.log('Client id disconnected ' + socket.id);
     });
   });
   if (dev) {
-    server.use(morgan('dev'));
+    // server.use(morgan('dev'));
   } else {
     server.use(morgan('tiny'));
     server.use(helmet());
@@ -71,6 +77,6 @@ app.prepare().then(async () => {
   RedisServer.getInstance();
 
   httpsServer.listen(appConfig.app.port, () => {
-    console.log(`Server is started: https://localhost:${appConfig.app.port}`);
+    console.log(`Server is started: http://localhost:${appConfig.app.port}`);
   });
 });

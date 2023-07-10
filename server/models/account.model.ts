@@ -16,8 +16,7 @@ const AccountSchema = new Schema<TAccount>(
       required: true,
     },
     address: { type: String },
-    firstName: { type: String },
-    lastName: { type: String },
+    fullname: { type: String },
     phoneNumber: { type: String },
     email: { type: String },
     roles: [
@@ -30,6 +29,5 @@ const AccountSchema = new Schema<TAccount>(
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );
-AccountSchema.index({ firstName: 'text', lastName: 'text', username: 'text', email: 'text' });
 const AccountModel = model<TAccount>(DOCUMENT_NAME, AccountSchema);
 export default AccountModel;

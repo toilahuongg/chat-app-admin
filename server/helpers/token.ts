@@ -29,13 +29,13 @@ export const createTokenPair = (
     }
   });
 
-export const verifyToken = (token: string, publicKey: string) =>
+export const verifyToken = <T>(token: string, publicKey: string): Promise<T> =>
   new Promise((resolve, reject) => {
     JWT.verify(token, publicKey, (err, decode) => {
       if (err) {
         reject(err);
       } else {
-        resolve(decode);
+        resolve(decode as T);
       }
     });
   });

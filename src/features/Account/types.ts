@@ -3,8 +3,7 @@ import { PaginationData } from '@src/types';
 export interface Account {
   _id: string;
   username: string;
-  firstName?: string;
-  lastName?: string;
+  fullname?: string;
   email: string;
   phoneNumber?: string;
   address?: string;

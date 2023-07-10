@@ -10,8 +10,7 @@ export const createAccountValidator = z.object({
       email: z
         .string({ required_error: 'Email is required', invalid_type_error: 'Username must be a string' })
         .email({ message: 'Invalid email address' }),
-      firstName: z.string().optional(),
-      lastName: z.string().optional(),
+      fullname: z.string().optional(),
       address: z.string().optional(),
       phoneNumber: z.string().optional(),
       roles: z.array(z.string()).optional(),
@@ -72,16 +71,9 @@ export const editAccountValidator = z.object({
 
 export const changeInformationValidator = z.object({
   body: z.object({
-    firstName: z
-      .string({
-        invalid_type_error: 'First name must be a string',
-      })
-      .optional(),
-    lastName: z
-      .string({
-        invalid_type_error: 'Last name must be a string',
-      })
-      .optional(),
+    fullname: z.string({
+      invalid_type_error: 'Full name must be a string',
+    }),
     phoneNumber: z
       .string({
         invalid_type_error: 'Phone number must be a string',

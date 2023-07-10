@@ -19,15 +19,14 @@ const EditAccountForm = () => {
     setAddress,
     setConfirmPassword,
     setEmail,
-    setFirstName,
-    setLastName,
+    setFullname,
     setPassword,
     setPhoneNumber,
     setUsername,
     toggleRoles,
   } = useStore(accountStore, (state) => state);
 
-  const { email, roles, username, address, confirmPassword, firstName, lastName, password, phoneNumber } = account;
+  const { email, roles, username, address, confirmPassword, fullname, password, phoneNumber } = account;
   return (
     <div className="flex flex-col gap-4">
       <Card>
@@ -80,22 +79,6 @@ const EditAccountForm = () => {
         <Card.Section title="Thông tin">
           <div className="grid grid-cols-2 gap-4">
             <Input
-              label="Firstname"
-              variant="outlined"
-              size="lg"
-              value={firstName || ''}
-              onChange={(e) => setFirstName(e.currentTarget.value)}
-              autoComplete="firstname"
-            />
-            <Input
-              variant="outlined"
-              size="lg"
-              label="Lastname"
-              value={lastName || ''}
-              onChange={(e) => setLastName(e.currentTarget.value)}
-              autoComplete="lastname"
-            />
-            <Input
               label="Address"
               variant="outlined"
               size="lg"
@@ -110,6 +93,14 @@ const EditAccountForm = () => {
               value={phoneNumber || ''}
               onChange={(e) => setPhoneNumber(e.currentTarget.value)}
               autoComplete="phone-number"
+            />
+            <Input
+              label="Fullname"
+              variant="outlined"
+              size="lg"
+              value={fullname || ''}
+              onChange={(e) => setFullname(e.currentTarget.value)}
+              autoComplete="Fullname"
             />
           </div>
         </Card.Section>
