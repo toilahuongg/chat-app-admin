@@ -1,4 +1,4 @@
 import express from 'express';
 
-const router = express.Router();
-export default router;
+const dashboardRouter = express.Router();
+export default dashboardRouter;
