@@ -5,7 +5,6 @@ import validate from '@server/validators';
 import {
   changeInformationValidator,
   changePasswordValidator,
-  findAllUsersValidator,
   loginValidator,
   createAccountValidator,
   editAccountValidator,
@@ -16,8 +15,9 @@ import appConfig from '@server/configs/app.config';
 import detectDevice from '@server/middlewares/device.middleware';
 import { accessScopes } from '@server/middlewares/role.middleware';
 import { SCOPES } from '@server/utils/scopes';
+import { paginationValidator } from '@server/validators/pagination.validator';
 
-const router = express.Router();
+const accountRouter = express.Router();
 
 // router.post(
 //   '/accounts/signup',
@@ -26,45 +26,45 @@ const router = express.Router();
 //   detectException(AccountController.signUp),
 // );
 
-router.post('/accounts/login', detectDevice, validate(loginValidator), detectException(AccountController.login));
+accountRouter.post('/accounts/login', detectDevice, validate(loginValidator), detectException(AccountController.login));
 
 if (!appConfig.app.isProd) {
-  router.get('/accounts/check-auth', authentication, (req, res) => {
+  accountRouter.get('/accounts/check-auth', authentication, (req, res) => {
     return res.json({ id: req.accountId });
   });
 }
 
-router.post('/accounts/refresh-token', authentication, detectException(AccountController.refreshToken));
-router.get('/accounts/me', authentication, detectException(AccountController.getInformation));
-router.get(
+accountRouter.post('/accounts/refresh-token', authentication, detectException(AccountController.refreshToken));
+accountRouter.get('/accounts/me', authentication, detectException(AccountController.getInformation));
+accountRouter.get(
   '/accounts/:id',
   authentication,
   accessScopes([SCOPES.READ_ACCOUNTS, SCOPES.WRITE_ACCOUNTS]),
   validate(findByIdValidator),
   detectException(AccountController.findById),
 );
-router.get(
+accountRouter.get(
   '/accounts',
   authentication,
-  validate(findAllUsersValidator),
-  detectException(AccountController.findAllUsers),
+  validate(paginationValidator),
+  detectException(AccountController.pagination),
 );
 
-router.patch(
+accountRouter.patch(
   '/accounts/change-password',
   authentication,
   validate(changePasswordValidator),
   detectException(AccountController.changePassword),
 );
 
-router.patch(
+accountRouter.patch(
   '/accounts/change-information',
   authentication,
   validate(changeInformationValidator),
   detectException(AccountController.changeInformation),
 );
 
-router.post(
+accountRouter.post(
   '/accounts/create',
   authentication,
   accessScopes([SCOPES.WRITE_ACCOUNTS]),
@@ -72,7 +72,7 @@ router.post(
   detectException(AccountController.create),
 );
 
-router.put(
+accountRouter.put(
   '/accounts/:id',
   authentication,
   accessScopes([SCOPES.WRITE_ACCOUNTS]),
@@ -80,12 +80,12 @@ router.put(
   detectException(AccountController.edit),
 );
 
-router.delete(
+accountRouter.delete(
   '/accounts/:id',
   authentication,
   accessScopes([SCOPES.WRITE_ACCOUNTS]),
   detectException(AccountController.delete),
 );
 
-router.post('/accounts/logout', authentication, detectException(AccountController.logout));
-export default router;
+accountRouter.post('/accounts/logout', authentication, detectException(AccountController.logout));
+export default accountRouter;

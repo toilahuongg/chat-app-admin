@@ -89,11 +89,11 @@ class AccountController {
     }).send(res);
   }
 
-  static async findAllUsers(req: Request, res: Response) {
+  static async pagination(req: Request, res: Response) {
     new OK({
       message: 'Get accounts success!',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      metadata: await AccountService.findAllUsers(req.query as any),
+      metadata: await AccountService.pagination(req.query as any),
     }).send(res);
   }
 }

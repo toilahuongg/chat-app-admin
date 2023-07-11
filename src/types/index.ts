@@ -8,3 +8,5 @@ export type Pagination = {
 export type PaginationData<T> = Pagination & {
   items: T[];
 };
+
+export type TSort = 'old' | 'new';

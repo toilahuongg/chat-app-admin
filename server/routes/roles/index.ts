@@ -7,40 +7,40 @@ import { createRoleValidator, deleteRoleValidator, updateRoleValidator } from '@
 import RoleController from '@server/controllers/role.controller';
 import { detectException } from '@server/middlewares';
 
-const router = express.Router();
+const roleRouter = express.Router();
 
-router.get(
+roleRouter.get(
   '/roles',
   authentication,
   accessScopes([SCOPES.READ_ROLES, SCOPES.WRITE_ROLES]),
   detectException(RoleController.findAll),
 );
-router.get(
+roleRouter.get(
   '/roles/:role_id',
   authentication,
   accessScopes([SCOPES.READ_ROLES]),
   detectException(RoleController.findById),
 );
 
-router.post(
+roleRouter.post(
   '/roles',
   authentication,
   accessScopes([SCOPES.WRITE_ROLES]),
   validate(createRoleValidator),
   detectException(RoleController.create),
 );
-router.put(
+roleRouter.put(
   '/roles/:role_id',
   authentication,
   accessScopes([SCOPES.WRITE_ROLES]),
   validate(updateRoleValidator),
   detectException(RoleController.update),
 );
-router.delete(
+roleRouter.delete(
   '/roles/:role_id',
   authentication,
   accessScopes([SCOPES.WRITE_ROLES]),
   validate(deleteRoleValidator),
   detectException(RoleController.delete),
 );
-export default router;
+export default roleRouter;

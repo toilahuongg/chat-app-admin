@@ -1,29 +1,33 @@
-import bcrypt from 'bcrypt';
-import AccountModel from '@server/models/account.model';
-import ErrorResponse, { AuthFailureError, ConflictError } from '@server/core/error.response';
+import appConfig from '@server/configs/app.config';
+import ErrorResponse, {
+  AuthFailureError,
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+} from '@server/core/error.response';
 import { generateKey } from '@server/helpers/generateKey';
 import { createTokenPair, generateToken, verifyToken } from '@server/helpers/token';
-import KeyService from './key.service';
+import AccountModel from '@server/models/account.model';
+import Pagination from '@server/models/repositories/paginate.repo';
+import { TAccount, TAccountEncrypt, TRefreshTokenSchema } from '@server/schema/account.schema';
+import { TDevice } from '@server/schema/key.schema';
+import { TRole } from '@server/schema/role.schema';
 import { getInfoData } from '@server/utils';
-import { z } from 'zod';
+import { SCOPES } from '@server/utils/scopes';
 import {
   changeInformationValidator,
   changePasswordValidator,
-  findAllUsersValidator,
-  loginValidator,
   createAccountValidator,
   editAccountValidator,
+  loginValidator,
 } from '@server/validators/account.validator';
-import { TDevice } from '@server/schema/key.schema';
-import { TRefreshTokenSchema, TAccountEncrypt, TAccount } from '@server/schema/account.schema';
-import { Types } from 'mongoose';
-import { ForbiddenError } from '@server/core/error.response';
-import appConfig from '@server/configs/app.config';
-import { NotFoundError } from '@server/core/error.response';
-import { TRole } from '@server/schema/role.schema';
+import { paginationValidator } from '@server/validators/pagination.validator';
+import { TSort } from '@src/types';
+import bcrypt from 'bcrypt';
 import { union } from 'lodash';
-import { findAllUsers } from '@server/models/repositories/account.repo';
-import { SCOPES } from '@server/utils/scopes';
+import { Types } from 'mongoose';
+import { z } from 'zod';
+import KeyService from './key.service';
 
 class AccountService {
   static async signUp(body: z.infer<typeof createAccountValidator.shape.body>, device: TDevice) {
@@ -275,17 +279,26 @@ class AccountService {
     return { accountId };
   }
 
-  static async findAllUsers(query: z.infer<typeof findAllUsersValidator.shape.query>) {
+  static async pagination(query: z.infer<typeof paginationValidator.shape.query>) {
     const { keyword, sortBy, limit, page } = query;
-    return await findAllUsers<keyof TAccount>(keyword, page, limit, sortBy, [
-      '_id',
-      'address',
-      'fullname',
-      'phoneNumber',
-      'email',
-      'username',
-      'roles',
-    ]);
+    const pagination = new Pagination<TAccount, keyof TAccount>(
+      AccountModel,
+      {
+        $or: [
+          {
+            username: { $regex: `.*${keyword || ''}.*`, $options: 'i' },
+          },
+          {
+            fullname: { $regex: `.*${keyword || ''}.*`, $options: 'i' },
+          },
+        ],
+      },
+      page,
+      limit,
+      ['_id', 'address', 'fullname', 'phoneNumber', 'email', 'username', 'roles'],
+      sortBy as TSort,
+    );
+    return await pagination.paginate();
   }
 }
 
