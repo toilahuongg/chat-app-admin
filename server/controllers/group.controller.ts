@@ -7,7 +7,7 @@ import { Types } from 'mongoose';
 export default class GroupController {
   static async create(req: Request, res: Response) {
     new CREATED({
-      metadata: await GroupService.create(req.body),
+      metadata: await GroupService.create(req.body, req.accountId!),
     }).send(res);
   }
 

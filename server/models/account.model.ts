@@ -26,6 +26,11 @@ const AccountSchema = new Schema<TAccount>(
         required: false,
       },
     ],
+    groups: [
+      {
+        type: Schema.Types.ObjectId,
+      },
+    ],
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );

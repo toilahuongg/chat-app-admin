@@ -7,6 +7,7 @@ import { paginationValidator } from '@server/validators/pagination.validator';
 import { TSort } from '@src/types';
 import { Types } from 'mongoose';
 import { z } from 'zod';
+import AccountService from './account.service';
 
 export default class GroupService {
   static async pagination(query: z.infer<typeof paginationValidator.shape.query>, accountId: Types.ObjectId) {
@@ -95,8 +96,10 @@ export default class GroupService {
     return groups.length > 0 ? groups[0] : null;
   }
 
-  static async create(body: z.infer<typeof createGroupValidator.shape.body>) {
-    const newGroup = await GroupModel.create({ ...body });
+  static async create(body: z.infer<typeof createGroupValidator.shape.body>, accountId: Types.ObjectId) {
+    const newGroup = await GroupModel.create({ ...body, host: accountId });
+    const accountIds = [...newGroup.accountIds, newGroup.host];
+    await Promise.all(accountIds.map((accountId) => AccountService.addGroup(accountId, newGroup._id)));
     return newGroup;
   }
 

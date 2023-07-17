@@ -5,6 +5,7 @@ import { createGroupValidator, deleteGroupValidator, updateGroupValidator } from
 import GroupController from '@server/controllers/group.controller';
 import { detectException } from '@server/middlewares';
 import { paginationValidator } from '@server/validators/pagination.validator';
+import messageRouter from './messages';
 
 const groupRouter = express.Router();
 
@@ -24,4 +25,6 @@ groupRouter.delete(
   validate(deleteGroupValidator),
   detectException(GroupController.delete),
 );
+
+groupRouter.use(messageRouter);
 export default groupRouter;

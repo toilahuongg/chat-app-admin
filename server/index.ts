@@ -15,6 +15,7 @@ import { createClient } from 'redis';
 import { createAdapter } from '@socket.io/redis-adapter';
 import RedisServer from './services/redis.service';
 import { authSocket } from './middlewares/auth.middleware';
+import { initSocket } from './services/socket.service';
 
 const dev = !appConfig.app.isProd;
 function resolve(p: string) {
@@ -37,18 +38,7 @@ app.prepare().then(async () => {
   await Promise.all([pubClient.connect(), subClient.connect()]).then(() => {
     io.adapter(createAdapter(pubClient, subClient));
   });
-  io.use(authSocket);
-  io.on('connection', (socket) => {
-    if (socket.data.newAccessToken) socket.emit('NEW_ACCESS_TOKEN', socket.data.newAccessToken);
-    console.log('Client id connected ' + socket.id + ', accountId: ' + socket.data.accountId);
-    socket.on('message', (msg) => {
-      console.log(msg);
-      io.send(socket.id + ': ' + msg);
-    });
-    socket.on('disconnect', () => {
-      console.log('Client id disconnected ' + socket.id);
-    });
-  });
+  initSocket(io);
   if (dev) {
     // server.use(morgan('dev'));
   } else {

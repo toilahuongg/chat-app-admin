@@ -266,7 +266,16 @@ class AccountService {
     const foundUser = await AccountModel.findById(accountId).lean();
     if (!foundUser) throw new NotFoundError('Account not found!');
     const user = {
-      ...getInfoData(foundUser, ['_id', 'username', 'email', 'fullname', 'phoneNumber', 'phoneNumber', 'roles']),
+      ...getInfoData(foundUser, [
+        '_id',
+        'username',
+        'email',
+        'fullname',
+        'phoneNumber',
+        'phoneNumber',
+        'roles',
+        'groups',
+      ]),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
 
@@ -299,6 +308,10 @@ class AccountService {
       sortBy as TSort,
     );
     return await pagination.paginate();
+  }
+
+  static addGroup(accountId: Types.ObjectId, groupId: Types.ObjectId) {
+    return AccountModel.findOneAndUpdate({ _id: accountId }, { $addToSet: { groups: groupId } }, { new: true }).lean();
   }
 }
 
