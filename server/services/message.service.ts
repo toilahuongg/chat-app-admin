@@ -4,6 +4,7 @@ import { TMessage } from '@server/schema/message.schema';
 import { createMessageValidator, paginationMessagesValidator } from '@server/validators/message.validator';
 import { z } from 'zod';
 import { Types } from 'mongoose';
+import GroupService from './group.service';
 
 export default class MessageService {
   static async pagination(
@@ -31,7 +32,12 @@ export default class MessageService {
     accountId: Types.ObjectId,
   ) {
     const { group_id } = params;
-    const newMessage = await MessageModel.create({ ...body, group: group_id, account: accountId });
+    const newMessage = await MessageModel.create({
+      ...body,
+      type: 'msg',
+      group: group_id,
+      account: accountId,
+    });
     return newMessage;
   }
 }

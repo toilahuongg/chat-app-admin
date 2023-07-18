@@ -9,7 +9,15 @@ const GroupSchema = new Schema<TGroup>(
   {
     name: { type: String },
     avatar: { type: String },
-    accountIds: [
+    lastSeen: {
+      type: [
+        {
+          _id: Schema.Types.ObjectId,
+          time: Date,
+        },
+      ],
+    },
+    accounts: [
       {
         type: Schema.Types.ObjectId,
         ref: AccountModel.modelName,

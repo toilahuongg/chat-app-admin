@@ -1,44 +1,95 @@
-import { NotFoundError } from '@server/core/error.response';
+import { ForbiddenError, NotFoundError } from '@server/core/error.response';
 import GroupModel from '@server/models/group.model';
-import Pagination from '@server/models/repositories/paginate.repo';
-import { TGroup } from '@server/schema/group.schema';
+import { getSkipItems } from '@server/utils';
 import { createGroupValidator, updateGroupValidator } from '@server/validators/group.validator';
 import { paginationValidator } from '@server/validators/pagination.validator';
-import { TSort } from '@src/types';
-import { Types } from 'mongoose';
+import mongoose, { ClientSession, Types } from 'mongoose';
 import { z } from 'zod';
 import AccountService from './account.service';
 
 export default class GroupService {
   static async pagination(query: z.infer<typeof paginationValidator.shape.query>, accountId: Types.ObjectId) {
-    const { keyword, sortBy, limit, page } = query;
-    const pagination = new Pagination<TGroup, keyof TGroup>(
-      GroupModel,
+    const { keyword, limit, page } = query;
+    const skip = getSkipItems(page, limit);
+    const match = {
+      $and: [
+        { $or: [{ accounts: { $in: [accountId] } }, { host: accountId }] },
+        {
+          name: { $regex: `.*${keyword || ''}.*`, $options: 'i' },
+        },
+      ],
+    };
+    const totalPage = Math.floor((await GroupModel.countDocuments(match)) / limit) + 1;
+    const items = await GroupModel.aggregate([
       {
-        $and: [
-          { $or: [{ accountIds: { $in: [accountId] } }, { host: accountId }] },
-          {
-            name: { $regex: `.*${keyword || ''}.*`, $options: 'i' },
-          },
-        ],
+        $match: match,
       },
-      page,
-      limit,
-      [],
-      sortBy as TSort,
-    );
-    return await pagination.paginate();
+      {
+        $lookup: {
+          from: 'Messages',
+          let: {
+            groupId: '$_id',
+          },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $eq: ['$group', '$$groupId'],
+                },
+              },
+            },
+            {
+              $sort: {
+                createdAt: -1,
+              },
+            },
+            {
+              $limit: 1,
+            },
+            {
+              $lookup: {
+                from: 'Accounts',
+                localField: 'account',
+                foreignField: '_id',
+                as: 'account',
+              },
+            },
+            {
+              $unwind: '$account',
+            },
+          ],
+          as: 'lastMessage',
+        },
+      },
+      {
+        $unwind: '$lastMessage',
+      },
+      {
+        $sort: {
+          'lastMessage.createdAt': -1,
+        },
+      },
+      { $limit: limit },
+      { $skip: skip },
+    ]);
+    return {
+      items,
+      currentPage: page <= 1 ? 1 : page,
+      totalPage: totalPage,
+      prevPage: page <= 1 ? null : page - 1,
+      nextPage: page >= totalPage ? null : page + 1,
+    };
   }
 
   static async findById(id: Types.ObjectId, accountId: Types.ObjectId) {
     const groups = await GroupModel.aggregate([
       {
-        $match: { _id: id, $or: [{ accountIds: { $in: [accountId] } }, { host: accountId }] },
+        $match: { _id: id, $or: [{ accounts: { $in: [accountId] } }, { host: accountId }] },
       },
       {
         $lookup: {
           from: 'Accounts',
-          localField: 'accountIds',
+          localField: 'accounts',
           foreignField: '_id',
           as: 'accounts',
         },
@@ -51,26 +102,17 @@ export default class GroupService {
           from: 'Accounts',
           localField: 'host',
           foreignField: '_id',
-          as: 'hostAccount',
+          as: 'host',
         },
       },
       {
-        $unwind: '$hostAccount',
-      },
-      {
-        $addFields: {
-          accounts: '$accounts',
-          hostAccount: '$hostAccount',
-        },
+        $unwind: '$host',
       },
       {
         $group: {
           _id: '$_id',
           accounts: {
             $push: '$accounts',
-          },
-          hostAccount: {
-            $first: '$hostAccount',
           },
           name: {
             $first: '$name',
@@ -80,9 +122,6 @@ export default class GroupService {
           },
           host: {
             $first: '$host',
-          },
-          accountIds: {
-            $first: '$accountIds',
           },
           createdAt: {
             $first: '$createdAt',
@@ -98,7 +137,7 @@ export default class GroupService {
 
   static async create(body: z.infer<typeof createGroupValidator.shape.body>, accountId: Types.ObjectId) {
     const newGroup = await GroupModel.create({ ...body, host: accountId });
-    const accountIds = [...newGroup.accountIds, newGroup.host];
+    const accountIds = [...newGroup.accounts, newGroup.host];
     await Promise.all(accountIds.map((accountId) => AccountService.addGroup(accountId, newGroup._id)));
     return newGroup;
   }
@@ -107,6 +146,29 @@ export default class GroupService {
     const GroupUpdated = await GroupModel.findOneAndUpdate({ _id: id }, { ...body }, { new: true }).lean();
     if (!GroupUpdated) throw new NotFoundError('Group not found');
     return GroupUpdated;
+  }
+
+  static async updateLastSeen(groupId: Types.ObjectId, accountId: Types.ObjectId, time: string) {
+    // const session: ClientSession = await mongoose.startSession();
+
+    // session.startTransaction();
+    // try {
+    const group = await GroupModel.findOne({ _id: groupId }).lean();
+    if (!group) throw new NotFoundError('Group not found');
+    const lastSeen = group.lastSeen || [];
+    const idx = lastSeen.findIndex(({ _id }) => _id.toString() === accountId.toString());
+    if (idx >= 0) lastSeen[idx].time = new Date(time);
+    else lastSeen.push({ _id: accountId, time: new Date(time) });
+    const updated = await GroupModel.findOneAndUpdate({ _id: groupId }, { lastSeen }, { new: true }).lean();
+    return updated;
+    //   await session.commitTransaction();
+    //   return updated;
+    // } catch (error) {
+    //   await session.abortTransaction();
+    //   throw error;
+    // } finally {
+    //   session.endSession();
+    // }
   }
 
   static async delete(id: Types.ObjectId) {

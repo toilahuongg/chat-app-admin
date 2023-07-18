@@ -29,6 +29,16 @@ export default class GroupController {
     }).send(res);
   }
 
+  static async updateLastSeen(req: Request, res: Response) {
+    new OK({
+      metadata: await GroupService.updateLastSeen(
+        new Types.ObjectId(req.params.group_id),
+        req.accountId!,
+        req.body.time,
+      ),
+    }).send(res);
+  }
+
   static async delete(req: Request, res: Response) {
     new OK({
       metadata: await GroupService.delete(new Types.ObjectId(req.params.group_id)),

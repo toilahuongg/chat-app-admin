@@ -10,6 +10,7 @@ const MessageSchema = new Schema<TMessage>(
   {
     msg: { type: String },
     images: { type: [String] },
+    type: { type: String, default: 'msg' },
     account: {
       type: Schema.Types.ObjectId,
       required: true,

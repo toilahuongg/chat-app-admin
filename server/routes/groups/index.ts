@@ -1,7 +1,12 @@
 import express from 'express';
 import { authentication } from '@server/middlewares/auth.middleware';
 import validate from '@server/validators';
-import { createGroupValidator, deleteGroupValidator, updateGroupValidator } from '@server/validators/group.validator';
+import {
+  createGroupValidator,
+  deleteGroupValidator,
+  updateGroupValidator,
+  updateLastSeenValidator,
+} from '@server/validators/group.validator';
 import GroupController from '@server/controllers/group.controller';
 import { detectException } from '@server/middlewares';
 import { paginationValidator } from '@server/validators/pagination.validator';
@@ -19,6 +24,14 @@ groupRouter.put(
   validate(updateGroupValidator),
   detectException(GroupController.update),
 );
+
+groupRouter.patch(
+  '/groups/:group_id/update-last-seen',
+  authentication,
+  validate(updateLastSeenValidator),
+  detectException(GroupController.updateLastSeen),
+);
+
 groupRouter.delete(
   '/groups/:group_id',
   authentication,
