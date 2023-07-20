@@ -35,6 +35,7 @@
     "next": "13.3.0",
     "nextjs-progressbar": "^0.0.16",
     "node-fetch": "^2.6.1",
+    "onesignal-node": "^3.4.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",

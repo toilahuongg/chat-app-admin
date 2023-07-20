@@ -6,7 +6,14 @@ export const initSocket = (io: Server) => {
   io.use(authSocket);
   io.on('connection', async (socket) => {
     if (socket.data.newAccessToken) socket.emit('NEW_ACCESS_TOKEN', socket.data.newAccessToken);
-    console.log('Client id connected ' + socket.id + ', accountId: ' + socket.data.accountId);
+    console.log(
+      'Client id connected ' +
+        socket.id +
+        ', accountId: ' +
+        socket.data.accountId +
+        ', deviceId: ' +
+        socket.data.deviceId,
+    );
 
     const userData = await AccountService.findById(socket.data.accountId);
     const groupIds = userData.groups?.map((id) => id.toString()) || [];

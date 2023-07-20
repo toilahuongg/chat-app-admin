@@ -10,6 +10,9 @@ const COMMON_APP = {
   maxLengthRefreshToken: process.env.MAX_REFRESH_TOKEN || 10,
   tokenExpiresIn: process.env.TOKEN_EXPIRESIN || '1h',
   refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRESIN || '7d',
+  oneSignalAppId: process.env.ONESIGNAL_APP_ID || '',
+  oneSignalAPIKey: process.env.ONESIGNAL_API_KEY || '',
+  oneSignalChannelID: process.env.ONESIGNAL_CHANNEL_ID || '',
 };
 
 const DEV = {

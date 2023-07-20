@@ -70,7 +70,7 @@ export const authentication = detectException(async (req, res, next) => {
   try {
     decoded = await verifyToken<TAccountEncrypt>(accessToken, foundKey.publicKey);
   } catch (error) {
-    console.log('Decoded token::', error);
+    // console.log('Decoded token::', error);
     throw new AuthFailureError('Invalid AccessToken!');
   }
 
@@ -113,11 +113,12 @@ export const authSocket = async (
       );
     }
   } catch (error) {
-    console.log('Decoded token::', error);
+    // console.log('Decoded token::', error);
     throw new AuthFailureError('Invalid AccessToken!');
   }
 
   if (clientId !== decoded.accountId) throw new AuthFailureError('Invalid Client ID');
   socket.data.accountId = new Types.ObjectId(clientId);
+  socket.data.deviceId = new Types.ObjectId(deviceId);
   return next();
 };
