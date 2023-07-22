@@ -1,8 +1,8 @@
-import { FilterQuery, Model } from 'mongoose';
+import { FilterQuery, Model, Types } from 'mongoose';
 import { getSelectData, getSkipItems } from '@server/utils';
 import { TSort } from '@src/types';
 
-export default class Pagination<T1, T2> {
+export class Pagination<T1, T2> {
   private model: Model<T1>;
   private match: FilterQuery<T1>;
   private page: number;
@@ -45,6 +45,48 @@ export default class Pagination<T1, T2> {
       totalPage: totalPage,
       prevPage: this.page <= 1 ? null : this.page - 1,
       nextPage: this.page >= totalPage ? null : this.page + 1,
+    };
+  }
+}
+
+export class Pagination2<T1, T2> {
+  private model: Model<T1>;
+  private match: FilterQuery<T1>;
+  private limit: number;
+  private cursor: Types.ObjectId | undefined;
+  private sort: TSort;
+  private select: T2[];
+
+  constructor(
+    model: Model<T1>,
+    match: FilterQuery<T1>,
+    cursor: Types.ObjectId | undefined,
+    limit: number,
+    select: T2[],
+    sort: TSort = 'new',
+  ) {
+    this.model = model;
+    this.match = match;
+    this.limit = limit;
+    this.select = select;
+    this.cursor = cursor;
+    this.sort = sort;
+  }
+  async paginate() {
+    return this.query();
+  }
+
+  async query() {
+    const items = await this.model
+      .find(this.cursor ? Object.assign(this.match, { _id: { $lt: this.cursor } }) : this.match)
+      .sort({ _id: this.sort === 'new' ? -1 : 1 })
+      .limit(this.limit)
+      .select(getSelectData(this.select))
+      .lean()
+      .exec();
+    return {
+      items,
+      lastCursor: items[items.length - 1]._id,
     };
   }
 }

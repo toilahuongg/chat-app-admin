@@ -8,7 +8,7 @@ import ErrorResponse, {
 import { generateKey } from '@server/helpers/generateKey';
 import { createTokenPair, generateToken, verifyToken } from '@server/helpers/token';
 import AccountModel from '@server/models/account.model';
-import Pagination from '@server/models/repositories/paginate.repo';
+import { Pagination } from '@server/models/repositories/paginate.repo';
 import { TAccount, TAccountEncrypt, TRefreshTokenSchema } from '@server/schema/account.schema';
 import { TDevice } from '@server/schema/key.schema';
 import { TRole } from '@server/schema/role.schema';

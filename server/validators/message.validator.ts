@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { paginationValidator } from './pagination.validator';
+import { paginationValidator2 } from './pagination.validator';
 
 export const groupIdValidator = z.object({
   params: z.object({
@@ -16,4 +16,4 @@ export const createMessageValidator = z
   })
   .merge(groupIdValidator);
 
-export const paginationMessagesValidator = paginationValidator.merge(groupIdValidator);
+export const paginationMessagesValidator = paginationValidator2.merge(groupIdValidator);

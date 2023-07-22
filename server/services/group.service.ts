@@ -1,9 +1,9 @@
-import { ForbiddenError, NotFoundError } from '@server/core/error.response';
+import { NotFoundError } from '@server/core/error.response';
 import GroupModel from '@server/models/group.model';
 import { getSkipItems } from '@server/utils';
 import { createGroupValidator, updateGroupValidator } from '@server/validators/group.validator';
 import { paginationValidator } from '@server/validators/pagination.validator';
-import mongoose, { ClientSession, Types } from 'mongoose';
+import { Types } from 'mongoose';
 import { z } from 'zod';
 import AccountService from './account.service';
 
@@ -122,6 +122,9 @@ export default class GroupService {
           },
           host: {
             $first: '$host',
+          },
+          lastSeen: {
+            $first: '$lastSeen',
           },
           createdAt: {
             $first: '$createdAt',
