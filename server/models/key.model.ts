@@ -6,11 +6,15 @@ const DOCUMENT_NAME = 'Key';
 const COLLECTION_NAME = 'Keys';
 
 const DeviceSchema = new Schema<TDevice>({
-  browser: {
+  model: {
     type: String,
     required: true,
   },
   os: {
+    type: String,
+    required: true,
+  },
+  osVersion: {
     type: String,
     required: true,
   },

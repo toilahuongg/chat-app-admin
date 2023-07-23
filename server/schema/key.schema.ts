@@ -2,9 +2,10 @@ import { Types } from 'mongoose';
 import { z } from 'zod';
 
 export const deviceSchema = z.object({
-  _id: z.instanceof(Types.ObjectId).optional(),
-  browser: z.string(),
+  _id: z.instanceof(Types.ObjectId),
+  model: z.string(),
   os: z.string(),
+  osVersion: z.string(),
   ipAddress: z.string(),
   refreshToken: z.string(),
 });

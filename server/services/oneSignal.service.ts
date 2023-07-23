@@ -38,6 +38,7 @@ export default class OneSignal {
     Keys.forEach(({ devices }) => {
       devices.forEach(({ _id }) => deviceIds.push(_id!.toString()));
     });
+    if (deviceIds.length === 0) return null;
     return client.createNotification({
       android_channel_id: appConfig.app.oneSignalChannelID,
       headings: {

@@ -14,12 +14,6 @@ export const deleteGroupValidator = z.object({
   }),
 });
 
-export const updateLastSeenValidator = z
-  .object({
-    body: z.object({
-      time: z.string({ required_error: 'Time is required', invalid_type_error: 'Name must be a string' }),
-    }),
-  })
-  .merge(deleteGroupValidator);
+export const updateLastSeenValidator = deleteGroupValidator;
 
 export const updateGroupValidator = createGroupValidator.merge(deleteGroupValidator);

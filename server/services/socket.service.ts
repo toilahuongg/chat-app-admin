@@ -24,6 +24,11 @@ export const initSocket = (io: Server) => {
       socket.to(group).emit('message', data);
     });
 
+    socket.on('update-last-seen', (data) => {
+      const { _id } = data;
+      socket.to(_id).emit('update-last-seen', data);
+    });
+
     socket.on('disconnect', () => {
       groupIds.map((id) => socket.leave(id));
       console.log('Client id disconnected ' + socket.id);

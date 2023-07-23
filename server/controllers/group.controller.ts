@@ -34,7 +34,7 @@ export default class GroupController {
       metadata: await GroupService.updateLastSeen(
         new Types.ObjectId(req.params.group_id),
         req.accountId!,
-        req.body.time,
+        new Date().toISOString(),
       ),
     }).send(res);
   }
