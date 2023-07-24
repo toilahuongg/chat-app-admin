@@ -1,25 +1,25 @@
 import { TMessage } from '@server/schema/message.schema';
 import { Schema, model } from 'mongoose';
 import AccountModel from './account.model';
-import GroupModel from './group.model';
+import ChatModel from './chat.model';
 
 const DOCUMENT_NAME = 'Message';
 const COLLECTION_NAME = 'Messages';
 
 const MessageSchema = new Schema<TMessage>(
   {
-    msg: { type: String },
+    content: { type: String },
     images: { type: [String] },
-    type: { type: String, default: 'msg' },
-    account: {
+    type: { type: String, default: 'only-content' },
+    sender: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: AccountModel.modelName,
     },
-    group: {
+    chatId: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: GroupModel.modelName,
+      ref: ChatModel.modelName,
     },
   },
   { timestamps: true, collection: COLLECTION_NAME },

@@ -8,14 +8,14 @@ import express from 'express';
 const messageRouter = express.Router();
 
 messageRouter.get(
-  '/groups/:group_id/messages',
+  '/chats/:chat_id/messages',
   authentication,
   validate(paginationMessagesValidator),
   detectException(MessageController.pagination),
 );
 
 messageRouter.post(
-  '/groups/:group_id/messages',
+  '/chats/:chat_id/messages',
   authentication,
   validate(createMessageValidator),
   detectException(MessageController.create),

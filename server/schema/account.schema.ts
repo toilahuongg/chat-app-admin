@@ -10,7 +10,7 @@ export const accountSchema = z.object({
   phoneNumber: z.string().optional(),
   address: z.string().optional(),
   roles: z.array(z.instanceof(Types.ObjectId)),
-  groups: z.array(z.instanceof(Types.ObjectId)),
+  chats: z.array(z.instanceof(Types.ObjectId)),
 });
 
 export const accountEncryptSchema = z.object({

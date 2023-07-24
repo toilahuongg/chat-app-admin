@@ -1,5 +1,5 @@
 import { NotFoundError } from '@server/core/error.response';
-import GroupModel from '@server/models/group.model';
+import ChatModel from '@server/models/chat.model';
 import MessageModel from '@server/models/message.model';
 import { Pagination2 } from '@server/models/repositories/paginate.repo';
 import { TMessage } from '@server/schema/message.schema';
@@ -7,7 +7,7 @@ import { createMessageValidator, paginationMessagesValidator } from '@server/val
 import { Types } from 'mongoose';
 import { z } from 'zod';
 import OneSignal from './oneSignal.service';
-import GroupService from './group.service';
+import ChatService from './chat.service';
 
 export default class MessageService {
   static async pagination(
@@ -15,13 +15,13 @@ export default class MessageService {
     params: z.infer<typeof paginationMessagesValidator.shape.params>,
   ) {
     const { cursor, limit } = query;
-    const { group_id } = params;
+    const { chat_id } = params;
     const pagination = new Pagination2<TMessage, keyof TMessage>(
       MessageModel,
       {
-        group: group_id,
+        chatId: chat_id,
       },
-      cursor ? new Types.ObjectId(cursor) : undefined,
+      !!cursor ? new Types.ObjectId(cursor) : undefined,
       limit,
       [],
       'new',
@@ -34,18 +34,18 @@ export default class MessageService {
     params: z.infer<typeof createMessageValidator.shape.params>,
     accountId: Types.ObjectId,
   ) {
-    const { group_id } = params;
-    const group = await GroupModel.findOne({ _id: group_id }).lean();
-    if (!group) throw new NotFoundError('Group not found!');
-    const accountIds = [...group.accounts, group.host].filter((id) => id.toString() !== accountId.toString());
+    const { chat_id } = params;
+    const chat = await ChatModel.findOne({ _id: chat_id }).lean();
+    if (!chat) throw new NotFoundError('Chat not found!');
+    const accountIds = chat.members.map(({ user }) => user).filter((user) => user.toString() !== accountId.toString());
     const newMessage = await MessageModel.create({
       ...body,
-      type: 'msg',
-      group: group_id,
-      account: accountId,
+      type: 'only-content',
+      chatId: chat_id,
+      sender: accountId,
     });
-    await GroupService.updateLastSeen(new Types.ObjectId(group_id), accountId, newMessage.createdAt.toISOString());
-    await OneSignal.createNotification(group.name, body.msg, { groupId: group_id }, accountIds);
+    await ChatService.updateLastSeen(new Types.ObjectId(chat_id), accountId, newMessage.createdAt.toISOString());
+    await OneSignal.createNotification(chat.name, body.content, { chatId: chat_id }, accountIds);
     return newMessage;
   }
 }

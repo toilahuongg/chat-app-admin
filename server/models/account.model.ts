@@ -26,7 +26,7 @@ const AccountSchema = new Schema<TAccount>(
         required: false,
       },
     ],
-    groups: [
+    chats: [
       {
         type: Schema.Types.ObjectId,
       },

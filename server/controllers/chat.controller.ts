@@ -1,38 +1,38 @@
 import { OK } from '@server/core/success.response';
 import { CREATED } from '@server/core/success.response';
-import GroupService from '@server/services/group.service';
+import ChatService from '@server/services/chat.service';
 import { Request, Response } from 'express';
 import { Types } from 'mongoose';
 
-export default class GroupController {
+export default class ChatController {
   static async create(req: Request, res: Response) {
     new CREATED({
-      metadata: await GroupService.create(req.body, req.accountId!),
+      metadata: await ChatService.create(req.body, req.accountId!),
     }).send(res);
   }
 
   static async pagination(req: Request, res: Response) {
     new OK({
-      metadata: await GroupService.pagination(req.query as any, req.accountId!),
+      metadata: await ChatService.pagination(req.query as any, req.accountId!),
     }).send(res);
   }
 
   static async findById(req: Request, res: Response) {
     new OK({
-      metadata: await GroupService.findById(new Types.ObjectId(req.params.group_id), req.accountId!),
+      metadata: await ChatService.findById(new Types.ObjectId(req.params.chat_id), req.accountId!),
     }).send(res);
   }
 
   static async update(req: Request, res: Response) {
     new OK({
-      metadata: await GroupService.update(new Types.ObjectId(req.params.group_id), req.body),
+      metadata: await ChatService.update(new Types.ObjectId(req.params.chat_id), req.body),
     }).send(res);
   }
 
   static async updateLastSeen(req: Request, res: Response) {
     new OK({
-      metadata: await GroupService.updateLastSeen(
-        new Types.ObjectId(req.params.group_id),
+      metadata: await ChatService.updateLastSeen(
+        new Types.ObjectId(req.params.chat_id),
         req.accountId!,
         new Date().toISOString(),
       ),
@@ -41,7 +41,7 @@ export default class GroupController {
 
   static async delete(req: Request, res: Response) {
     new OK({
-      metadata: await GroupService.delete(new Types.ObjectId(req.params.group_id)),
+      metadata: await ChatService.delete(new Types.ObjectId(req.params.chat_id)),
     }).send(res);
   }
 }

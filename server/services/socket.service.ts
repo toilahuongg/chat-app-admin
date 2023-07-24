@@ -16,12 +16,12 @@ export const initSocket = (io: Server) => {
     );
 
     const userData = await AccountService.findById(socket.data.accountId);
-    const groupIds = userData.groups?.map((id) => id.toString()) || [];
-    socket.join(groupIds);
+    const chatIds = userData.chats?.map((id) => id.toString()) || [];
+    socket.join(chatIds);
 
     socket.on('message', (data) => {
-      const { group } = data;
-      socket.to(group).emit('message', data);
+      const { chatId } = data;
+      socket.to(chatId).emit('message', data);
     });
 
     socket.on('update-last-seen', (data) => {
@@ -30,7 +30,7 @@ export const initSocket = (io: Server) => {
     });
 
     socket.on('disconnect', () => {
-      groupIds.map((id) => socket.leave(id));
+      chatIds.map((id) => socket.leave(id));
       console.log('Client id disconnected ' + socket.id);
     });
   });

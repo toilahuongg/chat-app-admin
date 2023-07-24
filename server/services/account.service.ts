@@ -274,7 +274,7 @@ class AccountService {
         'phoneNumber',
         'phoneNumber',
         'roles',
-        'groups',
+        'chats',
       ]),
       scopes: await AccountService.getScopesById(foundUser._id),
     };
@@ -310,8 +310,8 @@ class AccountService {
     return await pagination.paginate();
   }
 
-  static addGroup(accountId: Types.ObjectId, groupId: Types.ObjectId) {
-    return AccountModel.findOneAndUpdate({ _id: accountId }, { $addToSet: { groups: groupId } }, { new: true }).lean();
+  static addChat(accountId: Types.ObjectId, chatId: Types.ObjectId) {
+    return AccountModel.findOneAndUpdate({ _id: accountId }, { $addToSet: { chats: chatId } }, { new: true }).lean();
   }
 }
 

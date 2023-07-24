@@ -3,11 +3,11 @@ import { z } from 'zod';
 
 export const messageSchema = z.object({
   _id: z.instanceof(Types.ObjectId),
-  msg: z.string(),
+  content: z.string(),
   images: z.array(z.string()).optional(),
-  type: z.string(),
-  account: z.instanceof(Types.ObjectId),
-  group: z.instanceof(Types.ObjectId),
+  type: z.enum(['only-content']),
+  sender: z.instanceof(Types.ObjectId),
+  chatId: z.instanceof(Types.ObjectId),
   createdAt: z.date(),
 });
 

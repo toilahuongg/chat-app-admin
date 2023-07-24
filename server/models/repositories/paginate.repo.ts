@@ -86,7 +86,7 @@ export class Pagination2<T1, T2> {
       .exec();
     return {
       items,
-      lastCursor: items[items.length - 1]._id,
+      lastCursor: items[items.length - 1]?._id || '',
     };
   }
 }

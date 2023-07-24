@@ -3,7 +3,7 @@ import { TErrorResponse } from '@server/schema/response.schema';
 import express from 'express';
 import accountRouter from './accounts';
 import dashboardRouter from './dashboard';
-import groupRouter from './groups';
+import chatRouter from './chats';
 import roleRouter from './roles';
 import imageRouter from './images';
 
@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.use(accountRouter);
 router.use(roleRouter);
-router.use(groupRouter);
+router.use(chatRouter);
 router.use(imageRouter);
 router.use(dashboardRouter);
 
