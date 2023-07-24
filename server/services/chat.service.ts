@@ -7,6 +7,7 @@ import { z } from 'zod';
 import AccountService from './account.service';
 import { createChatValidator, updateChatValidator } from '@server/validators/chat.validator';
 import { TChatMember } from '@server/schema/chat.schema';
+import MessageService from './message.service';
 
 export default class ChatService {
   static async pagination(query: z.infer<typeof paginationValidator.shape.query>, accountId: Types.ObjectId) {
@@ -65,7 +66,7 @@ export default class ChatService {
       {
         $unwind: {
           path: '$lastMessage',
-          preserveNullAndEmptyArrays: true,
+          // preserveNullAndEmptyArrays: true,
         },
       },
       {
@@ -106,6 +107,16 @@ export default class ChatService {
     const newChat = await ChatModel.create({ ...body, members, type: 'group' });
     const accountIds = newChat.members.map(({ user }) => user);
     await Promise.all(accountIds.map((accountId) => AccountService.addChat(accountId, newChat._id)));
+    await MessageService.createNotify(
+      {
+        content: '{name} đã tạo nhóm',
+        images: [],
+      },
+      {
+        chat_id: newChat._id.toString(),
+      },
+      accountId,
+    );
     return newChat;
   }
 

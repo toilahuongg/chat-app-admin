@@ -6,7 +6,7 @@ import { Request, Response } from 'express';
 export default class MessageController {
   static async create(req: Request, res: Response) {
     new CREATED({
-      metadata: await MessageService.create(req.body, req.params as any, req.accountId!),
+      metadata: await MessageService.createContent(req.body, req.params as any, req.accountId!),
     }).send(res);
   }
 

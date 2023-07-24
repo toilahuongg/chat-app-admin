@@ -9,8 +9,8 @@ const COLLECTION_NAME = 'Messages';
 const MessageSchema = new Schema<TMessage>(
   {
     content: { type: String },
-    images: { type: [String] },
-    type: { type: String, default: 'only-content' },
+    images: { type: [String], default: [] },
+    type: { type: String, enum: ['content', 'notify'], default: 'content' },
     sender: {
       type: Schema.Types.ObjectId,
       required: true,
