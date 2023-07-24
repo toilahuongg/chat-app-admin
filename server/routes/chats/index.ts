@@ -16,6 +16,7 @@ const chatRouter = express.Router();
 
 chatRouter.get('/chats', authentication, validate(paginationValidator), detectException(ChatController.pagination));
 chatRouter.get('/chats/:chat_id', authentication, detectException(ChatController.findById));
+chatRouter.get('/chats/:recipient_id/private', authentication, detectException(ChatController.findPrivate));
 
 chatRouter.post('/chats', authentication, validate(createChatValidator), detectException(ChatController.create));
 chatRouter.put(

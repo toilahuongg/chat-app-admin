@@ -38,7 +38,6 @@ export default class MessageService {
     const { chat_id } = params;
     const chat = await ChatModel.findOne({ _id: chat_id }).lean();
     const sender = await AccountService.findById(accountId);
-    if (!sender) throw new ErrorResponse({ message: 'Đã xảy ra lỗi' });
     const name = sender.fullname || sender.username;
 
     if (!chat) throw new NotFoundError('Chat not found!');
@@ -71,7 +70,6 @@ export default class MessageService {
     const { chat_id } = params;
     const chat = await ChatModel.findOne({ _id: chat_id }).lean();
     const sender = await AccountService.findById(accountId);
-    if (!sender) throw new ErrorResponse({ message: 'Đã xảy ra lỗi' });
     const name = sender.fullname || sender.username;
 
     if (!chat) throw new NotFoundError('Chat not found!');

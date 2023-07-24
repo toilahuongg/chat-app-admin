@@ -11,6 +11,12 @@ export default class ChatController {
     }).send(res);
   }
 
+  static async findPrivate(req: Request, res: Response) {
+    new CREATED({
+      metadata: await ChatService.findPrivate(new Types.ObjectId(req.params.recipient_id), req.accountId!),
+    }).send(res);
+  }
+
   static async pagination(req: Request, res: Response) {
     new OK({
       metadata: await ChatService.pagination(req.query as any, req.accountId!),

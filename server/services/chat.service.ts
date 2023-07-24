@@ -74,6 +74,14 @@ export default class ChatService {
           'lastMessage.createdAt': -1,
         },
       },
+      {
+        $lookup: {
+          from: 'Accounts',
+          localField: 'members.user',
+          foreignField: '_id',
+          as: 'membersInfo',
+        },
+      },
       { $limit: limit },
       { $skip: skip },
     ]);
@@ -87,10 +95,35 @@ export default class ChatService {
   }
 
   static async findById(id: Types.ObjectId, accountId: Types.ObjectId) {
-    const chat = await ChatModel.findOne({ _id: id, 'members.user': { $in: [accountId] } })
+    const chat = await ChatModel.findOne({ _id: id, 'members.user': { $in: [accountId] }, type: 'group' })
       .populate('members.user')
       .lean();
     return chat;
+  }
+
+  static async findPrivate(recipientId: Types.ObjectId, accountId: Types.ObjectId) {
+    const chat = await ChatModel.findOne({
+      type: 'private', // Lọc ra các cuộc trò chuyện riêng tư
+      'members.user': { $all: [recipientId, accountId] }, // Điều kiện để cả bạn và người cụ thể là thành viên của cuộc trò chuyện
+    })
+      .populate('members.user')
+      .lean();
+    if (chat) return chat;
+    await AccountService.findById(recipientId);
+    const members: Partial<TChatMember>[] = [
+      {
+        user: recipientId,
+        role: 'admin',
+      },
+      {
+        user: accountId,
+        role: 'admin',
+      },
+    ];
+    const newChat = new ChatModel({ name: '', avatar: '', members, type: 'private' });
+    newChat.save();
+    newChat.populate('members.user');
+    return newChat.populate('members.user');
   }
 
   static async create(body: z.infer<typeof createChatValidator.shape.body>, accountId: Types.ObjectId) {
