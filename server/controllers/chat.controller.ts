@@ -22,6 +22,11 @@ export default class ChatController {
       metadata: await ChatService.pagination(req.query as any, req.accountId!),
     }).send(res);
   }
+  static async search(req: Request, res: Response) {
+    new OK({
+      metadata: await ChatService.search(req.query as any, req.accountId!),
+    }).send(res);
+  }
 
   static async findById(req: Request, res: Response) {
     new OK({

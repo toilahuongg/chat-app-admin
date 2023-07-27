@@ -15,6 +15,7 @@ import messageRouter from './messages';
 const chatRouter = express.Router();
 
 chatRouter.get('/chats', authentication, validate(paginationValidator), detectException(ChatController.pagination));
+chatRouter.get('/chats/search', authentication, validate(paginationValidator), detectException(ChatController.search));
 chatRouter.get('/chats/:chat_id', authentication, detectException(ChatController.findById));
 chatRouter.get('/chats/:recipient_id/private', authentication, detectException(ChatController.findPrivate));
 

@@ -11,16 +11,9 @@ import MessageService from './message.service';
 
 export default class ChatService {
   static async pagination(query: z.infer<typeof paginationValidator.shape.query>, accountId: Types.ObjectId) {
-    const { keyword, limit, page } = query;
+    const { limit, page } = query;
     const skip = getSkipItems(page, limit);
-    const match = {
-      $and: [
-        { 'members.user': { $in: [accountId] } },
-        {
-          name: { $regex: `.*${keyword || ''}.*`, $options: 'i' },
-        },
-      ],
-    };
+    const match = { 'members.user': { $in: [accountId] } };
     const totalPage = Math.floor((await ChatModel.countDocuments(match)) / limit) + 1;
     const items = await ChatModel.aggregate([
       {
@@ -91,6 +84,44 @@ export default class ChatService {
       totalPage: totalPage,
       prevPage: page <= 1 ? null : page - 1,
       nextPage: page >= totalPage ? null : page + 1,
+    };
+  }
+
+  static async search(query: z.infer<typeof paginationValidator.shape.query>, accountId: Types.ObjectId) {
+    const { keyword } = query;
+    if (!keyword) return null;
+    const groupChats = await ChatModel.aggregate([
+      {
+        $match: {
+          name: { $regex: `.*${keyword || ''}.*`, $options: 'i' },
+          'members.user': { $in: [accountId] },
+          type: 'group',
+        },
+      },
+    ]);
+    const privateChats = await ChatModel.aggregate([
+      {
+        $lookup: {
+          from: 'Accounts',
+          localField: 'members.user',
+          foreignField: '_id',
+          as: 'membersInfo',
+        },
+      },
+      {
+        $match: {
+          $or: [
+            { 'membersInfo.fullname': { $regex: `.*${keyword || ''}.*`, $options: 'i' } },
+            { 'membersInfo.username': { $regex: `.*${keyword || ''}.*`, $options: 'i' } },
+          ],
+          'members.user': { $in: [accountId] },
+          type: 'private',
+        },
+      },
+    ]);
+    return {
+      groupChats,
+      privateChats,
     };
   }
 
