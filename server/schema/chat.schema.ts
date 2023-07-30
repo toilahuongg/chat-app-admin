@@ -11,6 +11,7 @@ export const chatSchema = z.object({
   name: z.string(),
   type: z.enum(['private', 'group']),
   avatar: z.string().optional(),
+  images: z.array(z.instanceof(Types.ObjectId)),
   members: z.array(memberSchema),
   settings: z.any(),
 });

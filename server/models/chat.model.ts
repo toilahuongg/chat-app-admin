@@ -1,26 +1,28 @@
 import { Schema, model } from 'mongoose';
 import AccountModel from './account.model';
-import { TChat } from '@server/schema/chat.schema';
+import { TChat, TChatMember } from '@server/schema/chat.schema';
+import ImageModel from './image.model';
 
 const DOCUMENT_NAME = 'Chat';
 const COLLECTION_NAME = 'Chats';
 
-const chatMemberSchema = new Schema(
+const memberSchema = new Schema<TChatMember>(
   {
-    user: { type: Schema.Types.ObjectId, ref: AccountModel.modelName, required: true }, // Reference tới bảng "users"
+    user: { type: Schema.Types.ObjectId, ref: AccountModel.modelName, required: true },
     role: { type: String, enum: ['member', 'admin'], default: 'member' },
-    lastSeen: { type: Date, default: Date.now }, // Thời gian xem cuối cùng của thành viên
+    lastSeen: { type: Date, default: Date.now },
   },
   { _id: false },
-); // Tùy chọn để không sử dụng trường "_id" cho mảng members
+);
 
 const ChatSchema = new Schema<TChat>(
   {
     name: { type: String },
     type: { type: String, enum: ['private', 'group'], required: true },
     avatar: { type: String },
-    members: [chatMemberSchema],
+    members: [memberSchema],
     settings: { type: Object },
+    images: { type: [Schema.Types.ObjectId], ref: ImageModel.modelName },
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );

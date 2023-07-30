@@ -190,6 +190,16 @@ export default class ChatService {
     return chatUpdate;
   }
 
+  static async updateImages(id: Types.ObjectId, images: string[]) {
+    const chatUpdate = await ChatModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { images: { $each: images } } },
+      { new: true },
+    ).lean();
+    if (!chatUpdate) throw new NotFoundError('Chat not found');
+    return chatUpdate;
+  }
+
   static async updateLastSeen(chatId: Types.ObjectId, accountId: Types.ObjectId, time: string) {
     // const session: ClientSession = await mongoose.startSession();
 

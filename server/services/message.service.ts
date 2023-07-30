@@ -1,14 +1,12 @@
-import ErrorResponse, { ForbiddenError, NotFoundError } from '@server/core/error.response';
+import { NotFoundError } from '@server/core/error.response';
 import ChatModel from '@server/models/chat.model';
 import MessageModel from '@server/models/message.model';
-import { Pagination2 } from '@server/models/repositories/paginate.repo';
-import { TMessage } from '@server/schema/message.schema';
 import { createMessageValidator, paginationMessagesValidator } from '@server/validators/message.validator';
 import { Types } from 'mongoose';
 import { z } from 'zod';
-import OneSignal from './oneSignal.service';
-import ChatService from './chat.service';
 import AccountService from './account.service';
+import ChatService from './chat.service';
+import OneSignal from './oneSignal.service';
 
 export default class MessageService {
   static async pagination(
@@ -17,17 +15,16 @@ export default class MessageService {
   ) {
     const { cursor, limit } = query;
     const { chat_id } = params;
-    const pagination = new Pagination2<TMessage, keyof TMessage>(
-      MessageModel,
-      {
-        chatId: chat_id,
-      },
-      !!cursor ? new Types.ObjectId(cursor) : undefined,
-      limit,
-      [],
-      'new',
-    );
-    return await pagination.paginate();
+    const items = await MessageModel.find(Object.assign({ chatId: chat_id }, cursor ? { _id: { $lt: cursor } } : {}))
+      .populate('images')
+      .sort({ _id: -1 })
+      .limit(limit)
+      .lean()
+      .exec();
+    return {
+      items,
+      lastCursor: items[items.length - 1]?._id,
+    };
   }
 
   static async createContent(
@@ -48,18 +45,24 @@ export default class MessageService {
       chatId: chat_id,
       sender: accountId,
     });
-    await ChatService.updateLastSeen(new Types.ObjectId(chat_id), accountId, newMessage.createdAt.toISOString());
-    if (chat.type === 'private') {
-      await OneSignal.createNotification(name!, body.content, { chatId: chat_id }, accountIds);
-    } else {
-      await OneSignal.createNotification(
-        `${name} vừa gửi tin nhắn trong ${chat.name}`,
-        body.content,
-        { chatId: chat_id },
-        accountIds,
-      );
-    }
-    return newMessage;
+    await Promise.all([
+      ChatService.updateLastSeen(new Types.ObjectId(chat_id), accountId, newMessage.createdAt.toISOString()),
+      ChatService.updateImages(new Types.ObjectId(chat_id), body.images),
+      async () => {
+        if (chat.type === 'private') {
+          await OneSignal.createNotification(name!, body.content, { chatId: chat_id }, accountIds);
+        } else {
+          await OneSignal.createNotification(
+            `${name} vừa gửi tin nhắn trong ${chat.name}`,
+            body.content,
+            { chatId: chat_id },
+            accountIds,
+          );
+        }
+      },
+    ]);
+
+    return MessageModel.findOne({ _id: newMessage._id }).populate('images').lean();
   }
 
   static async createNotify(
