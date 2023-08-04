@@ -22,6 +22,10 @@ const MessageSchema = new Schema<TMessage>(
       required: true,
       ref: ChatModel.modelName,
     },
+    reply: {
+      type: Schema.Types.ObjectId,
+      ref: DOCUMENT_NAME,
+    },
   },
   { timestamps: true, collection: COLLECTION_NAME },
 );

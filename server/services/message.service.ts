@@ -17,6 +17,10 @@ export default class MessageService {
     const { chat_id } = params;
     const items = await MessageModel.find(Object.assign({ chatId: chat_id }, cursor ? { _id: { $lt: cursor } } : {}))
       .populate('images')
+      .populate({
+        path: 'reply',
+        populate: { path: 'images' },
+      })
       .sort({ _id: -1 })
       .limit(limit)
       .lean()
@@ -62,7 +66,13 @@ export default class MessageService {
       },
     ]);
 
-    return MessageModel.findOne({ _id: newMessage._id }).populate('images').lean();
+    return MessageModel.findOne({ _id: newMessage._id })
+      .populate('images')
+      .populate({
+        path: 'reply',
+        populate: { path: 'images' },
+      })
+      .lean();
   }
 
   static async createNotify(

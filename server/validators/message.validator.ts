@@ -12,6 +12,7 @@ export const createMessageValidator = z
     body: z.object({
       content: z.string(),
       images: z.array(z.string()),
+      reply: z.string().optional(),
     }),
   })
   .merge(chatIdValidator);

@@ -8,6 +8,7 @@ export const messageSchema = z.object({
   type: z.enum(['content', 'notify']),
   sender: z.instanceof(Types.ObjectId),
   chatId: z.instanceof(Types.ObjectId),
+  reply: z.instanceof(Types.ObjectId),
   createdAt: z.date(),
 });
 
